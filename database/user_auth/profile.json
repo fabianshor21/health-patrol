@@ -1,11 +1,51 @@
 {
-  "admin2020": {
-    "nama_orangtua": "Fauzan Hania Anshor",
-    "nama_wali_pengganti": "Irsyad",
-    "nama_pengguna": "admin2020",
-    "kata_sandi": "8fb1caa3538acc215bde8d29440b7d2c",
-    "no_kartu_keluarga": "317404191119990004",
-    "no_telepon": "081318420901",
-    "alamat_email": "hotpotcookie@gmail.com"
-  }
+  "nkdevi": [
+    {
+      "nama_orangtua": "Nurwulan Kusuma Devi",
+      "nama_wali_pengganti": "",
+      "nama_pengguna": "nkdevi",
+      "kata_sandi": "8ab09d7727307f7d8eafc89a7c4326bd",
+      "no_kartu_keluarga": "3174041911990004",
+      "no_telepon": "082125337746",
+      "alamat_email": "nurwulandevi026@gmail.com"
+    },
+    {
+      "icat": {
+        "nama_panjang_anak": "Muhammad Nur Irsyad",
+        "nama_panggilan_anak": "icat",
+        "jumlah_anak": "3",
+        "urutan_anak": "3",
+        "tanggal_lahir": "1999-11-19",
+        "jenis_kelahiran": "ceasar",
+        "jenis_kelamin": "laki-laki",
+        "tinggi_badan_lahir": "15",
+        "berat_badan_lahir": "7.311",
+        "kelainan_bawaan": "kuping_kecil,obesitas"
+      },
+      "ilham": {
+        "nama_panjang_anak": "Muhammad Nur Ilham",
+        "nama_panggilan_anak": "ilham",
+        "jumlah_anak": "3",
+        "urutan_anak": "2",
+        "tanggal_lahir": "1997-11-19",
+        "jenis_kelahiran": "ceasar",
+        "jenis_kelamin": "laki-laki",
+        "tinggi_badan_lahir": "10",
+        "berat_badan_lahir": "4.121",
+        "kelainan_bawaan": ""
+      },
+      "iksan": {
+        "nama_panjang_anak": "Muhammad Nur Ikhsan Z.",
+        "nama_panggilan_anak": "iksan",
+        "jumlah_anak": "3",
+        "urutan_anak": "1",
+        "tanggal_lahir": "1995-02-02",
+        "jenis_kelahiran": "ceasar",
+        "jenis_kelamin": "laki-laki",
+        "tinggi_badan_lahir": "12.121",
+        "berat_badan_lahir": "5.512",
+        "kelainan_bawaan": ""
+      }
+    }
+  ]
 }
