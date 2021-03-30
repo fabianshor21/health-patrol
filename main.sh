@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
 dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json")
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -13,32 +13,6 @@ ENDCOLOR="\e[0m"
 if [[ $UID == "0" ]]; then
 	while :; do
 		clear
-		curdate=$(date +"%D %r")
-		date_format=$()
-		curdate="${GREEN}$curdate${BLUE}"
-		page="${GREEN}LOGIN${BLUE}"
-		lang="${GREEN}ID${BLUE}"
-		left_b="${YELLOW}[${ENDCOLOR}"; right_b="${YELLOW}]${ENDCOLOR}"
-		head=""
-		foot=""
-		foot2=""
-		head+="${GREEN}"	
-		head+="██╗  ██╗███████╗ █████╗ ██╗  ████████╗██╗  ██╗\n"
-		head+="██║  ██║██╔════╝██╔══██╗██║  ╚══██╔══╝██║  ██║\n"
-		head+="███████║█████╗  ███████║██║     ██║   ███████║\n"   
-		head+="██╔══██║██╔══╝  ██╔══██║██║     ██║   ██╔══██║\n"    
-		head+="██║  ██║███████╗██║  ██║███████╗██║   ██║  ██║\n"   
-		head+="╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝\n"
-		head+="${BLUE}"                                              
-		head+="█████╗  █████╗ ████████╗███████╗████████╗██╗ \n"   
-		head+="██╔═██╗██╔══██╗╚══██╔══╝██╔══██║██╔═══██║██║    POSITION : $page\n"    
-		head+="█████╔╝███████║   ██║   ██████╔╝██║   ██║██║    LANGUAGE : $lang\n"    
-		head+="██╔══╝ ██╔══██║   ██║   ██╔═███ ████████╝████║  $curdate\n"    
-		head+="╚═══════════════════════════════════════════════════════════════════"
-		foot+="${BLUE}════════════════════════════════════════════════════════════════════${ENDCOLOR}"
-		foot2+="${DARK_G}----------------------------------------------------------${ENDCOLOR}"
-		head+="${ENDCOLOR}"
-
 		for dir in ${dir_path[@]}; do
 			if [[ ! -d $dir ]]; then
 				mkdir $dir
@@ -46,27 +20,44 @@ if [[ $UID == "0" ]]; then
 		done
 		for file in ${file_path[@]}; do
 			touch $file
+			check_json=$(echo $file | grep -E "json")
+			if [[ $check_json ]]; then
+				if [[ ! -s $file ]]; then
+					echo "{}" > $file
+				fi
+			fi
 		done
 
-		echo -e "$head"
-		echo -e "║::  $left_b${BLUE}SI$right_b SIGN-IN       | $left_b${BLUE}SU$right_b SIGN-UP        | $left_b${BLUE}CL$right_b CLEAR       ::║${ENDCOLOR}"
+		left_b="${YELLOW}[${ENDCOLOR}"; right_b="${YELLOW}]${ENDCOLOR}"
+		bash source/banner.sh 1 LOGIN PUBLIC
+		echo -e "║::  $left_b${BLUE}MA$right_b MASUK_AKUN    | $left_b${BLUE}DA$right_b DAFTAR_AKUN    | $left_b${BLUE}CL$right_b CLEAR       ::║${ENDCOLOR}"
+		echo -e "║::  $left_b${BLUE}TA$right_b TAMBAH_ANAK   | $left_b${BLUE}KL$right_b KELUAR         | $left_b${BLUE}..$right_b ...         ::║${ENDCOLOR}"		
+		foot2=$(bash source/banner.sh 3)
 		echo -e "║::  $foot2  ::║"
-		echo -e "$foot"		
+		bash source/banner.sh 2
+
 		while :; do
 			echo -en "${YELLOW}>>>  ${ENDCOLOR}"; read opt
 			case $opt in
 				"CL"|"cl")
 					break
 					;;
-				"SI"|"si")
-					echo -e "$foot"
+				"KL"|"kl")
+					exit 0
+					;;
+				"MA"|"ma")
+					bash source/banner.sh 2
 					bash source/login.sh signin
 					;;
-				"SU"|"su")
-					echo -e "$foot"
+				"DA"|"da")
+					bash source/banner.sh 2
 					bash source/login.sh signup
+					;;
+				"TA"|"ta")
+					bash source/banner.sh 2
+					bash source/login.sh addkid
+					;;					
 			esac
 		done
 	done
-	#sudo bash source/login.sh
 fi
