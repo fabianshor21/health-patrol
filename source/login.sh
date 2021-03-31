@@ -17,7 +17,10 @@ case $1 in
 		read -p  "║::  nama_panggilan_anak : " get_kid
 		read -sp "║::  kata_sandi ........ : " get_pass
 		get_valid=$(cat "${file_path[1]}" | grep -E "$get_user")
-		if [[ "$get_user" && "$get_kid" && "$get_pass" ]]; then
+		if [[ "$get_user" &&  "$get_pass" ]]; then
+			if [[ ! "$get_kid" ]]; then
+				get_kid="nullPointerAddress"
+			fi
 			if [[ "$get_valid" ]]; then
 				pass_hash=$(echo "$get_pass" | md5sum | cut -d ' ' -f 1)
 				load_hash=$(jq ".$get_user[0].kata_sandi" ${file_path[1]} | cut -d '"' -f 2)
@@ -28,12 +31,22 @@ case $1 in
 					else
 						echo -e "\n║::  $foot2"
 						sudo jq ".$get_user[1]" "${file_path[1]}" | grep ": {" | cut -d '"' -f 2 > "${file_path[1]}.tmp"
-						bash source/banner.sh
-						while IFS= read -r get_line; do
-							get_kidname=$(jq ".$get_user[1].$get_line.nama_panjang_anak" ${file_path[1]})
-							echo -e "║::  -| $get_line ($get_kidname)"
-						done < "${file_path[1]}.tmp"
+						if [[ -s "${file_path[1]}.tmp" ]]; then
+							echo -e "     berikut data anak yang terdaftar untuk nama_pengguna ${GREEN}$get_user${ENDCOLOR}:"
+							echo -e "     $foot2"													
+							while IFS= read -r get_line; do
+								get_kidname=$(jq ".$get_user[1].$get_line.nama_panjang_anak" ${file_path[1]})
+								get_kidname=$(echo $get_kidname | cut -d '"' -f 2)
+								echo -e " --  $get_line / $get_kidname"
+							done < "${file_path[1]}.tmp"
+							rm "${file_path[1]}.tmp"
+						else
+							echo -e "     belum ada anak yang terdata untuk nama_pengguna ${YELLOW}$get_user${ENDCOLOR}!"
+						fi
 					fi
+				else
+					echo -e "\n║::  $foot2"
+					echo -e "     kata_sandi untuk nama_pengguna ${RED}$get_user${ENDCOLOR} tidak cocok!"
 				fi
 			fi
 		fi
@@ -57,9 +70,11 @@ case $1 in
 				sudo jq ".$get_username[0] += {\"nama_orangtua\":\"$get_parentname\",\"nama_wali_pengganti\":\"$get_subtname\",\"nama_pengguna\":\"$get_username\",\"kata_sandi\":\"$pass_hash\",\"no_kartu_keluarga\":\"$get_kk\",\"no_telepon\":\"$get_phone\",\"alamat_email\":\"$get_email\"}" "${file_path[1]}" > "${file_path[1]}.tmp" && 
 				cat "${file_path[1]}.tmp" > "${file_path[1]}" &&
 				rm "${file_path[1]}.tmp" 
-				#sudo jq ".$get_username.anak[0] +="
-				#cat "${file_path[1]}.tmp" > "${file_path[1]}" &&
-				#rm "${file_path[1]}.tmp" 
+				echo -e "║::  $foot2"
+				echo -e "     akun dengan nama_pengguna ${GREEN}$get_username${ENDCOLOR} berhasil dibuat!"
+			else
+				echo -e "║::  $foot2"
+				echo -e "     akun dengan nama_pengguna ${RED}$get_username${ENDCOLOR} sudah tidak tersedia!"
 			fi
 		fi
 		echo -e ""		

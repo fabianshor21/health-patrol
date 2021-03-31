@@ -9,6 +9,7 @@ BLUE="\e[36m"
 YELLOW="\e[33m"
 DARK_G="\e[37m"
 ENDCOLOR="\e[0m"
+foot2=$(bash source/banner.sh 3)
 
 if [[ $UID == "0" ]]; then
 	while :; do
@@ -32,7 +33,6 @@ if [[ $UID == "0" ]]; then
 		bash source/banner.sh 1 LOGIN PUBLIC
 		echo -e "║::  $left_b${BLUE}MA$right_b MASUK_AKUN    | $left_b${BLUE}DA$right_b DAFTAR_AKUN    | $left_b${BLUE}CL$right_b CLEAR       ::║${ENDCOLOR}"
 		echo -e "║::  $left_b${BLUE}TA$right_b TAMBAH_ANAK   | $left_b${BLUE}KL$right_b KELUAR         | $left_b${BLUE}..$right_b ...         ::║${ENDCOLOR}"		
-		foot2=$(bash source/banner.sh 3)
 		echo -e "║::  $foot2  ::║"
 		bash source/banner.sh 2
 
