@@ -1,0 +1,14 @@
+{
+  "batuk": 
+  [
+    {
+	  "nama_penyakit": "Radang Amandel",
+	  "nama_ilmiah": "Amandelius Santorius",
+	  "sinopsis": "radang amandel adalah salah satu penyakit tenggorokan",
+	  "gejala": ["sakit tenggorokan","susah menelan","demam"],
+	  "penyebab": ["jarang minum air hangat","makan makanan yang berminyak"],
+	  "pertolongan_pertama": ["minum jahe hangat","mandi air hangat"],
+	  "suhu"
+	},
+  ]
+}

@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
 dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log")
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -30,16 +30,20 @@ if [[ $UID == "0" ]]; then
 		done
 
 		left_b="${YELLOW}[${ENDCOLOR}"; right_b="${YELLOW}]${ENDCOLOR}"
-		bash source/banner.sh 1 LOGIN PUBLIC
-		echo -e "║::  $left_b${BLUE}MA$right_b MASUK_AKUN    | $left_b${BLUE}DA$right_b DAFTAR_AKUN    | $left_b${BLUE}CL$right_b CLEAR       ::║${ENDCOLOR}"
-		echo -e "║::  $left_b${BLUE}TA$right_b TAMBAH_ANAK   | $left_b${BLUE}KL$right_b KELUAR         | $left_b${BLUE}..$right_b ...         ::║${ENDCOLOR}"		
+		bash source/banner.sh 1 LOGIN PUBLIC ---
+		printf  "║::  $left_b${BLUE}MA$right_b %-17s | $left_b${BLUE}DA$right_b %-18s | $left_b${BLUE}TA$right_b %-18s | $left_b${BLUE}CL$right_b %-17s  ::║${ENDCOLOR}\n" "MASUK_AKUN" "DAFTAR_AKUN" "TAMBAH_ANAK" "KELUAR"
 		echo -e "║::  $foot2  ::║"
 		bash source/banner.sh 2
 
 		while :; do
+			check_session=$(cat "${file_path[0]}")
+			if  [[ ! "$check_session" ]]; then
+				echo "public ---" > "${file_path[0]}"
+				break
+			fi
 			echo -en "${YELLOW}>>>  ${ENDCOLOR}"; read opt
 			case $opt in
-				"CL"|"cl")
+				"CLEAR"|"clear")
 					break
 					;;
 				"KL"|"kl")
@@ -61,3 +65,4 @@ if [[ $UID == "0" ]]; then
 		done
 	done
 fi
+║::  [MA] MASUK_AKUN    | [DA] DAFTAR_AKUN    | [CL] CLEAR                                                ::║

@@ -1,0 +1,68 @@
+main.sh
+source/
+database/
+|---- user_auth/
+|	  |- session.log
+|	  |- profile.json
+|	  |- profile-growth.json
+|---- medical_record/
+|	  |- irsyad.json
+|     |- ..
+|---- health_info/
+	  |- disease.json
+	  |- hospital.json
+      |- ..
+
+Login (session?)
+1. Sign In (nama_pengguna, nama_anak, kata_sandi)
+2. Sign Up (nama)
+
+Home
+1. Diagnosa_Penyakit	 4. Riwayat_Profil	    7. Database_Info
+2. Perkembangan_Anak	 5. Panduan_Penggunaan	8. kembali
+3. Ubah_Profil           6. Referensi           9. Keluar
+
+Banner
+1. Total Penyakit
+2. Total Gejala
+3. Total Pertolongan
+4. Total Anak
+
+Diagnosa Result
+- invoice diagnosa				 - gejala lengkap		- keakuratan %
+- timestamp diagnosa			 - penyebab lengkap		- info puskesmas
+- nama anak                      - pertolongan pertama
+- penyakit + istilah + sinopsis	 - tingkat status
+
+Cetak Result
+- Habis Diagnosa
+
+Certainity Factor (CF)
+- H (hipotesis), E (evidence)
+- CF(H,E) : Certainity Factor / Kepastian, total H yang dipengaruhi E (0-1)
+- MB(H,E) : Measure of Belief / Kenaikan Kepercayaan terhadap H dari E (0-1)
+- MD(H,E) : Measure of Disbelief / Kenaikan Ketidakpercayaan terhadap H dari E (0-1)
+
+CF Rule tiap gejala : 1 / total penyakit yg gejala sama
+
+Parameter Diagnosa
+- Berat Badan
+- Tinggi Badan 
+- Suhu Badan / Leher
+- Kecepatan Ambil Nafas
+- Kecepatan Denyut Nadi
+-------------
+BESOK :
+1. isi disease_generic.json // info all
+2. isi disease_symptomps.json // penyakit + gejala buat query // suku kata
+3. coba kalkulasi CF rule tiap gejala
+
+
+
+
+
+
+
+
+
+

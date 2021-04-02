@@ -91,5 +91,16 @@
       "no_telepon": "082125337746",
       "alamat_email": ""
     }
+  ],
+  "nurkocat": [
+    {
+      "nama_orangtua": "ahmad sobari",
+      "nama_wali_pengganti": "",
+      "nama_pengguna": "nurkocat",
+      "kata_sandi": "0e40adde31df3e78594fc5d1646506fa",
+      "no_kartu_keluarga": "31740419111912",
+      "no_telepon": "081318420901",
+      "alamat_email": ""
+    }
   ]
 }

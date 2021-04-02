@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
 dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log")
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -16,7 +16,7 @@ case $1 in
 		read -p  "║::  nama_pengguna ..... : " get_user
 		read -p  "║::  nama_panggilan_anak : " get_kid
 		read -sp "║::  kata_sandi ........ : " get_pass
-		get_valid=$(cat "${file_path[1]}" | grep -E "$get_user")
+		get_valid=$(cat "${file_path[1]}" | grep -w "$get_user")
 		if [[ "$get_user" &&  "$get_pass" ]]; then
 			if [[ ! "$get_kid" ]]; then
 				get_kid="nullPointerAddress"
@@ -27,6 +27,10 @@ case $1 in
 				if [[ "$pass_hash" == "$load_hash" ]]; then
 					check_kid=$(jq ".$get_user[1].$get_kid.nama_panggilan_anak" ${file_path[1]} | cut -d '"' -f 2)
 					if [[ "$get_kid" == "$check_kid" ]]; then
+						echo -e ""
+						timestamp=$(date +"%D--%T")
+						echo "$timestamp $get_user $get_kid" >> "${file_path[3]}"
+						echo "$get_user $get_kid" > "${file_path[0]}"
 						bash source/home.sh
 					else
 						echo -e "\n║::  $foot2"
@@ -48,6 +52,9 @@ case $1 in
 					echo -e "\n║::  $foot2"
 					echo -e "     kata_sandi untuk nama_pengguna ${RED}$get_user${ENDCOLOR} tidak cocok!"
 				fi
+			else
+				echo -e "\n║::  $foot2"
+				echo -e "     nama_pengguna ${YELLOW}$get_user${ENDCOLOR} belum terdaftar dalam sistem!"
 			fi
 		fi
 		echo -e ""		
@@ -112,7 +119,13 @@ case $1 in
 					cat "${file_path[1]}.tmp" > "${file_path[1]}" &&
 					rm "${file_path[1]}.tmp"
 				fi
+			else
+				echo -e "\n║::  $foot2"
+				echo -e "     kata_sandi untuk nama_pengguna ${RED}$get_user${ENDCOLOR} tidak cocok!"
 			fi
+		else
+			echo -e "\n║::  $foot2"
+			echo -e "     nama_pengguna ${YELLOW}$get_user${ENDCOLOR} belum terdaftar dalam sistem!"
 		fi
 		echo -e ""
 		;;
