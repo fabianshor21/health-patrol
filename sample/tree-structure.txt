@@ -66,5 +66,9 @@ Klasifkasi disease_generic
 - Pucat				   
 - Kejang                
 
-Klasifikasi : Batuk
-gejala      : berbentuk darah
+Flow
+1. User Isi Parameter Diagnosa (lihat atas)
+2. User pilih Klasifiaksi disease_generic
+3. Pertanyaan : "Sudah berapa hari mengalami gejala : "
+3.	- user cerita isi gejalanya
+	- 
