@@ -54,15 +54,17 @@ Parameter Diagnosa
 -------------
 BESOK :
 1. isi disease_generic.json // info all
-2. isi disease_symptomps.json // penyakit + gejala buat query // suku kata
+2. isi disease_regex.json // penyakit + gejala buat query // suku kata
 3. coba kalkulasi CF rule tiap gejala
 
+Klasifkasi disease_generic
+- Batuk / Sulit Bernafas | Masalah Berat Badan
+- Diare 				 | Sulit Tidur
+- Demam				     | Masalah Kulit
+- Masalah Telinga        | Menangis
+- Masalah Makan  		 | Masalah Muntah
+- Pucat				   
+- Kejang                
 
-
-
-
-
-
-
-
-
+Klasifikasi : Batuk
+gejala      : berbentuk darah

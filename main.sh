@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
 dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json")
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -31,7 +31,7 @@ if [[ $UID == "0" ]]; then
 
 		left_b="${YELLOW}[${ENDCOLOR}"; right_b="${YELLOW}]${ENDCOLOR}"
 		bash source/banner.sh 1 LOGIN PUBLIC ---
-		printf  "║::  $left_b${BLUE}MA$right_b %-17s | $left_b${BLUE}DA$right_b %-18s | $left_b${BLUE}TA$right_b %-18s | $left_b${BLUE}CL$right_b %-17s  ::║${ENDCOLOR}\n" "MASUK_AKUN" "DAFTAR_AKUN" "TAMBAH_ANAK" "KELUAR"
+		printf  "║::  $left_b${BLUE}MA$right_b %-17s | $left_b${BLUE}DA$right_b %-18s | $left_b${BLUE}TA$right_b %-18s | $left_b${BLUE}KL$right_b %-17s  ::║${ENDCOLOR}\n" "MASUK_AKUN" "DAFTAR_AKUN" "TAMBAH_ANAK" "KELUAR"
 		echo -e "║::  $foot2  ::║"
 		bash source/banner.sh 2
 
@@ -51,15 +51,15 @@ if [[ $UID == "0" ]]; then
 					;;
 				"MA"|"ma")
 					bash source/banner.sh 2
-					bash source/login.sh signin
+					bash source/run-login.sh signin
 					;;
 				"DA"|"da")
 					bash source/banner.sh 2
-					bash source/login.sh signup
+					bash source/run-login.sh signup
 					;;
 				"TA"|"ta")
 					bash source/banner.sh 2
-					bash source/login.sh addkid
+					bash source/run-login.sh addkid
 					;;					
 			esac
 		done
