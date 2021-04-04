@@ -11,14 +11,14 @@ DARK_G="\e[37m"
 ENDCOLOR="\e[0m"
 foot2=$(bash source/banner.sh 3)
 left_b="${YELLOW}[${ENDCOLOR}"; right_b="${YELLOW}]${ENDCOLOR}"
-user=$(cat ${file_path[0]} | cut -d ' ' -f 2 | tail -n 1); user=$(echo "${user^^}")
-kid=$(cat ${file_path[0]} | cut -d ' ' -f 3 | tail -n 1); kid=$(echo "${kid^^}")
+user=$(cat ${file_path[0]} | cut -d ' ' -f 1 | tail -n 1); user=$(echo "${user^^}")
+kid=$(cat ${file_path[0]} | cut -d ' ' -f 2 | tail -n 1); kid=$(echo "${kid^^}")
 
 while :; do
 	clear
 	bash source/banner.sh 1 HOME "$user" "$kid"
-	printf  "║::  $left_b${BLUE}DP$right_b %-17s | $left_b${BLUE}PA$right_b %-18s | $left_b${BLUE}UP$right_b %-18s | $left_b${BLUE}RP$right_b %-17s  ::║${ENDCOLOR}\n" "DIAGNOSA_PENYAKIT" "PERKEMBANGAN_ANAK" "UBAH_PROFIL" "RIWAYAT_PROFIL"
-	printf  "║::  $left_b${BLUE}PP$right_b %-17s | $left_b${BLUE}RF$right_b %-18s | $left_b${BLUE}IP$right_b %-18s | $left_b${BLUE}KB$right_b %-17s  ::║${ENDCOLOR}\n" "PANDUAN_PROGRAM" "REFERENSI" "INFO_PUSKESMAS" "KEMBALI"	
+	printf  "║::  $left_b${BLUE}DP$right_b %-17s | $left_b${BLUE}PA$right_b %-18s | $left_b${BLUE}UP$right_b %-18s | $left_b${BLUE}RP$right_b %-17s ::║${ENDCOLOR}\n" "DIAGNOSA_PENYAKIT" "PERKEMBANGAN_ANAK" "UBAH_PROFIL" "RIWAYAT_PROFIL"
+	printf  "║::  $left_b${BLUE}PP$right_b %-17s | $left_b${BLUE}RF$right_b %-18s | $left_b${BLUE}IP$right_b %-18s | $left_b${BLUE}KB$right_b %-17s ::║${ENDCOLOR}\n" "PANDUAN_PROGRAM" "REFERENSI" "INFO_PUSKESMAS" "KEMBALI"	
 	echo -e "║::  $foot2  ::║"
 	bash source/banner.sh 2
 

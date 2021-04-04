@@ -1,1 +1,16 @@
-{}
+{
+  "batuk_sulit_bernafas": 
+  [
+    {
+	  "nama_penyakit": "Infeksi Paru-paru Berat",
+	  "nama_ilmiah": "Pneumonia",
+	  "sinopsis": "pneumonia merupakan peradangan paru-paru yang disebabkan oleh infeksi bakteri. umum dijumpai pada usia balita hingga remaja",
+	  "gejala": ["bernapas dengan dinding dada menarik kedalam","saturasi oksigen kurang dari 90 %","adanya suara mengi saat menghembuskan nafas","frekuensi nafas yang relatif cepat setiap menit-nya","anak mengalami demam","kepala terangguk-angguk menandakan pernapasan berat","telapak tangan terlihat sangat pucat"],
+	  "penyebab": ["adanya infeksi yang disebabkan oleh virus maupun bakteri","kondisi bangunan rumah yang kurang memadai","kondisi kelembaman yang tinggi dalam lingkungan rumah","banyaknya konsumsi pasif bahan bakar yang tidak aman"],
+	  "pertolongan_pertama": ["berikan oksigen maksimal 2-3 liter setiap menit-nya","berikan dosis pertama antibiotik yang sesuai anjuran dokter","rawat anak di rumah sakit","berikan paracetamol untuk menunjang demam"],
+	  "param_suhu": 37.7,
+	  "param_nafas": [50,40],
+	  "param_saturasi": 90
+	}
+  ]
+}

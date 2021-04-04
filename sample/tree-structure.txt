@@ -51,11 +51,8 @@ Parameter Diagnosa
 - Suhu Badan / Leher
 - Kecepatan Ambil Nafas
 - Kecepatan Denyut Nadi
+- Saturasi Oksigen
 -------------
-BESOK :
-1. isi disease_generic.json // info all
-2. isi disease_regex.json // penyakit + gejala buat query // suku kata
-3. coba kalkulasi CF rule tiap gejala
 
 Klasifkasi disease_generic
 - Batuk / Sulit Bernafas | Masalah Berat Badan
@@ -72,3 +69,8 @@ Flow
 3. Pertanyaan : "Sudah berapa hari mengalami gejala : "
 3.	- user cerita isi gejalanya
 	- 
+
+BESOK :
+1. isi disease_generic.json // info all //
+2. isi disease_regex.json // penyakit + gejala + regex // 
+3. coba kalkulasi CF rule tiap gejala

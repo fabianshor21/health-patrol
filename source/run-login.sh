@@ -106,6 +106,7 @@ case $1 in
 				read -p "║::  tinggi_badan_lahir .... : " get_height
 				read -p "║::  berat_badan_lahir ..... : " get_weight
 				read -p "║::  kelainan_bawaan ....... : " get_inbred
+				read -p "║::  riwayat_infeksi_HIV ... : " get_hiv
 				## imunisasi
 				if [[ "$get_kidname" && "$get_siblings_tot" && "$get_siblings_order" && "$get_birth" && "$get_type_birth" && "$get_type_sex" && "$get_height" && "$get_weight" ]]; then
 					sum_arr=$(echo "$get_inbred" | tr -s ' ' '_')

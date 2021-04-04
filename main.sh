@@ -31,7 +31,7 @@ if [[ $UID == "0" ]]; then
 
 		left_b="${YELLOW}[${ENDCOLOR}"; right_b="${YELLOW}]${ENDCOLOR}"
 		bash source/banner.sh 1 LOGIN PUBLIC ---
-		printf  "║::  $left_b${BLUE}MA$right_b %-17s | $left_b${BLUE}DA$right_b %-18s | $left_b${BLUE}TA$right_b %-18s | $left_b${BLUE}KL$right_b %-17s  ::║${ENDCOLOR}\n" "MASUK_AKUN" "DAFTAR_AKUN" "TAMBAH_ANAK" "KELUAR"
+		printf  "║::  $left_b${BLUE}MA$right_b %-17s | $left_b${BLUE}DA$right_b %-18s | $left_b${BLUE}TA$right_b %-18s | $left_b${BLUE}KL$right_b %-16s  ::║${ENDCOLOR}\n" "MASUK_AKUN" "DAFTAR_AKUN" "TAMBAH_ANAK" "KELUAR"
 		echo -e "║::  $foot2  ::║"
 		bash source/banner.sh 2
 
