@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
 dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json" "${dir_path[4]}/disease_class.json")
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -115,7 +115,7 @@ case $1 in
 					get_age=$(echo "$get_age" | perl -nl -MPOSIX -e 'print floor($_);')
 					ctr_kid=$(jq ".$get_user" "${file_path[1]}" | grep -E "nama_anak" | wc -l)
 					ctr_kid=$((++ctr_kid))
-					sudo jq ".$get_user[1].$get_kidnickname += {\"nama_panjang_anak\":\"$get_kidname\",\"nama_panggilan_anak\":\"$get_kidnickname\",\"jumlah_anak\":\"$get_siblings_tot\",\"urutan_anak\":\"$get_siblings_order\",\"tanggal_lahir\":\"$get_birth\",\"jenis_kelahiran\":\"$get_type_birth\",\"jenis_kelamin\":\"$get_type_sex\",\"tinggi_badan_lahir\":\"$get_height\",\"berat_badan_lahir\":\"$get_weight\",\"kelainan_bawaan\":\"$sum_arr\"}" "${file_path[1]}" > "${file_path[1]}.tmp" && 
+					sudo jq ".$get_user[1].$get_kidnickname += {\"nama_panjang_anak\":\"$get_kidname\",\"nama_panggilan_anak\":\"$get_kidnickname\",\"jumlah_anak\":\"$get_siblings_tot\",\"urutan_anak\":\"$get_siblings_order\",\"tanggal_lahir\":\"$get_birth\",\"jenis_kelahiran\":\"$get_type_birth\",\"jenis_kelamin\":\"$get_type_sex\",\"tinggi_badan_lahir\":\"$get_height\",\"berat_badan_lahir\":\"$get_weight\",\"kelainan_bawaan\":\"$sum_arr\",\"riwayat_infeksi_HIV\":\"$get_hiv\"}" "${file_path[1]}" > "${file_path[1]}.tmp" && 
 					#\"kelainan_bawaan\":\"$sum_arr\"
 					cat "${file_path[1]}.tmp" > "${file_path[1]}" &&
 					rm "${file_path[1]}.tmp"

@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
 dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json" "${dir_path[4]}/disease_class.json")
 
 RED="\e[31m"
 GREEN="\e[32m"
