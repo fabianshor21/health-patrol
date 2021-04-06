@@ -117,10 +117,12 @@ case $1 in
 					get_age=$(echo "$get_age" | perl -nl -MPOSIX -e 'print floor($_);')
 					ctr_kid=$(jq ".$get_user" "${file_path[1]}" | grep -E "nama_anak" | wc -l)
 					ctr_kid=$((++ctr_kid))
-					sudo jq ".$get_user[1].$get_kidnickname += {\"nama_panjang_anak\":\"$get_kidname\",\"nama_panggilan_anak\":\"$get_kidnickname\",\"jumlah_anak\":\"$get_siblings_tot\",\"urutan_anak\":\"$get_siblings_order\",\"tanggal_lahir\":\"$get_birth\",\"jenis_kelahiran\":\"$get_type_birth\",\"jenis_kelamin\":\"$get_type_sex\",\"tinggi_badan_lahir\":\"$get_height\",\"berat_badan_lahir\":\"$get_weight\",\"kelainan_bawaan\":\"$sum_arr\",\"riwayat_infeksi_HIV\":\"$get_hiv\",\"alergi_obat\":\"$sum_arr2\"}" "${file_path[1]}" > "${file_path[1]}.tmp" && 
+					sudo jq ".$get_user[1].$get_kidnickname += {\"nama_panjang_anak\":\"$get_kidname\",\"nama_panggilan_anak\":\"$get_kidnickname\",\"jumlah_anak\":$get_siblings_tot,\"urutan_anak\":$get_siblings_order,\"tanggal_lahir\":\"$get_birth\",\"jenis_kelahiran\":\"$get_type_birth\",\"jenis_kelamin\":\"$get_type_sex\",\"tinggi_badan_lahir\":\"$get_height\",\"berat_badan_lahir\":\"$get_weight\",\"kelainan_bawaan\":\"$sum_arr\",\"riwayat_infeksi_HIV\":\"$get_hiv\",\"alergi_obat\":\"$sum_arr2\"}" "${file_path[1]}" > "${file_path[1]}.tmp" && 
 					#\"kelainan_bawaan\":\"$sum_arr\"
 					cat "${file_path[1]}.tmp" > "${file_path[1]}" &&
 					rm "${file_path[1]}.tmp"
+					echo -e "║::  $foot2"
+					echo -e "     akun dengan nama_panggilan_anak ${GREEN}$get_kidname${ENDCOLOR} berhasil ditambahkan!"
 				fi
 			else
 				echo -e "\n║::  $foot2"

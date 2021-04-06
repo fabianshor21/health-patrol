@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
 dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json" "${dir_path[4]}/disease_class.json")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json" "${dir_path[4]}/disease_class.json" "${dir_path[4]}/fetch_symtomps")
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -38,15 +38,27 @@ if [[ "$check_gejala" != "null" ]]; then
 	else
 		param_nafas=$(jq ".$main_gejala[$itr].param_nafas[1]" "${file_path[4]}")		
 	fi
+	echo -e "║::  tuliskan gejala yang anda alami ${GREEN}satu-per-satu${ENDCOLOR} secara singkat dan jelas"
+	echo -e "║::  $foot2"
+	ans=""
+	comp=""
+	number=1
+	while [[ $ans != "end" ]]; do
+		printf "║::  ${YELLOW}%.2d | ${ENDCOLOR}" "$number" ; read ans
+		comp+="$ans\n"
+		number=$((++number))
+	done
+	echo -e "$comp" | head -n -2 > "${file_path[7]}"
 
 	while [[ "$itr" -le "$each_ctr_penyakit" ]]; do
 		param_suhu=$(jq ".$main_gejala[$itr].param_suhu" "${file_path[4]}")
-		param_suhu=$(jq ".$main_gejala[$itr].param_suhu" "${file_path[4]}")
+		param_saturasi=$(jq ".$main_gejala[$itr].param_saturasi" "${file_path[4]}")
 		if [[ "$get_age" -lt 1 ]]; then
 			param_nafas=$(jq ".$main_gejala[$itr].param_nafas[0]" "${file_path[4]}")
 		else
 			param_nafas=$(jq ".$main_gejala[$itr].param_nafas[1]" "${file_path[4]}")
 		fi
+		## main calculation goes here beb
 		itr=$((++itr))
 	done
 else
