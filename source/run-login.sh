@@ -107,15 +107,17 @@ case $1 in
 				read -p "║::  berat_badan_lahir ..... : " get_weight
 				read -p "║::  kelainan_bawaan ....... : " get_inbred
 				read -p "║::  riwayat_infeksi_HIV ... : " get_hiv
+				read -p "║::  alergi_obat ........... : " get_alergy
 				## imunisasi
 				if [[ "$get_kidname" && "$get_siblings_tot" && "$get_siblings_order" && "$get_birth" && "$get_type_birth" && "$get_type_sex" && "$get_height" && "$get_weight" ]]; then
 					sum_arr=$(echo "$get_inbred" | tr -s ' ' '_')
+					sum_arr2=$(echo "$get_alergy" | tr -s ' ' '_')
 					get_age=$(dateutils.ddiff $get_birth $curdate)
 					get_age=$((get_age/365))
 					get_age=$(echo "$get_age" | perl -nl -MPOSIX -e 'print floor($_);')
 					ctr_kid=$(jq ".$get_user" "${file_path[1]}" | grep -E "nama_anak" | wc -l)
 					ctr_kid=$((++ctr_kid))
-					sudo jq ".$get_user[1].$get_kidnickname += {\"nama_panjang_anak\":\"$get_kidname\",\"nama_panggilan_anak\":\"$get_kidnickname\",\"jumlah_anak\":\"$get_siblings_tot\",\"urutan_anak\":\"$get_siblings_order\",\"tanggal_lahir\":\"$get_birth\",\"jenis_kelahiran\":\"$get_type_birth\",\"jenis_kelamin\":\"$get_type_sex\",\"tinggi_badan_lahir\":\"$get_height\",\"berat_badan_lahir\":\"$get_weight\",\"kelainan_bawaan\":\"$sum_arr\",\"riwayat_infeksi_HIV\":\"$get_hiv\"}" "${file_path[1]}" > "${file_path[1]}.tmp" && 
+					sudo jq ".$get_user[1].$get_kidnickname += {\"nama_panjang_anak\":\"$get_kidname\",\"nama_panggilan_anak\":\"$get_kidnickname\",\"jumlah_anak\":\"$get_siblings_tot\",\"urutan_anak\":\"$get_siblings_order\",\"tanggal_lahir\":\"$get_birth\",\"jenis_kelahiran\":\"$get_type_birth\",\"jenis_kelamin\":\"$get_type_sex\",\"tinggi_badan_lahir\":\"$get_height\",\"berat_badan_lahir\":\"$get_weight\",\"kelainan_bawaan\":\"$sum_arr\",\"riwayat_infeksi_HIV\":\"$get_hiv\",\"alergi_obat\":\"$sum_arr2\"}" "${file_path[1]}" > "${file_path[1]}.tmp" && 
 					#\"kelainan_bawaan\":\"$sum_arr\"
 					cat "${file_path[1]}.tmp" > "${file_path[1]}" &&
 					rm "${file_path[1]}.tmp"

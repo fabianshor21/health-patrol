@@ -24,5 +24,43 @@
         "riwayat_infeksi_HIV": ""
       }
     }
+  ],
+  "nkdevi": [
+    {
+      "nama_orangtua": "nurwulan kusuma devi",
+      "nama_wali_pengganti": "",
+      "nama_pengguna": "nkdevi",
+      "kata_sandi": "e0a5b7181c26f795926dee665bb9f742",
+      "no_kartu_keluarga": "3174040211020004",
+      "no_telepon": "082125337746",
+      "alamat_email": "nkdevi@gmail.com"
+    }
+  ],
+  "sbj2021": [
+    {
+      "nama_orangtua": "ahmad banjari",
+      "nama_wali_pengganti": "subarjo banjari",
+      "nama_pengguna": "sbj2021",
+      "kata_sandi": "4b9956728bfbe70915cbe7cee945c4ad",
+      "no_kartu_keluarga": "318012345501",
+      "no_telepon": "0215337746",
+      "alamat_email": "subajo.tik.pnj.ac.id"
+    },
+    {
+      "tang": {
+        "nama_panjang_anak": "lintang sugianto",
+        "nama_panggilan_anak": "tang",
+        "jumlah_anak": "3",
+        "urutan_anak": "1",
+        "tanggal_lahir": "2000-10-20",
+        "jenis_kelahiran": "ceasar",
+        "jenis_kelamin": "laki-laki",
+        "tinggi_badan_lahir": "20.121",
+        "berat_badan_lahir": "7.121",
+        "kelainan_bawaan": "",
+        "riwayat_infeksi_HIV": "",
+        "alergi_obat": ""
+      }
+    }
   ]
 }
