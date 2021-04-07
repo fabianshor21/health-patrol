@@ -44,8 +44,10 @@ if [[ "$check_gejala" != "null" ]]; then
 	comp=""
 	number=1
 	while [[ $ans != "end" ]]; do
-		printf "║::  ${YELLOW}%.2d | ${ENDCOLOR}" "$number" ; read ans
-		comp+="$ans\n"
+		printf "║::  ${YELLOW}%.2d - ${ENDCOLOR}" "$number" ; read ans
+		if [[ "$ans" ]]; then
+			comp+="$ans\n"
+		fi
 		number=$((++number))
 	done
 	echo -e "$comp" | head -n -2 > "${file_path[7]}"
