@@ -1,12 +1,12 @@
 #!/bin/bash
 #----------
-ans=""
-comp=""
-num=01
-while [[ $ans != "end" ]];do
-	echo -en "$num | "; read ans
-	comp+="$ans\n"
-	num=$((++num))
-	num="0$num"
+arr_regex=("1" "2" "3" "4")
+arr_regex_len=${#arr_regex[@]}
+ctr=0
+while [ $ctr -lt $arr_regex_len ]; do
+	if [[ $((ctr+1)) < $arr_regex_len ]]; then
+		echo "${arr_regex[$ctr]} + ${arr_regex[$((ctr+1))]}"
+	fi
+	ctr=$((++ctr))
 done
-echo -e "$comp" | head -n -2
+

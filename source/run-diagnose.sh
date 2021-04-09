@@ -44,14 +44,14 @@ if [[ "$check_gejala" != "null" ]]; then
 	ans=""
 	comp=""
 	number=1
-	while [[ $ans != "end" ]]; do
+	while [[ $ans != "done" ]]; do
 		printf "║::  ${YELLOW}%.2d - ${ENDCOLOR}" "$number" ; read ans
 		if [[ "$ans" ]]; then
 			comp+="$ans\n"
 		fi
 		number=$((++number))
 	done
-	echo -e "$comp" | head -n -2 > "${file_path[7]}"
+	echo -e "$comp" | head -n -2 | tr -s '-' '_' > "${file_path[7]}"
 
 	while [[ "$itr" -lt "$idx" ]]; do
 		param_suhu=$(jq ".$main_gejala[$itr].param_suhu" "${file_path[4]}")
@@ -71,24 +71,59 @@ if [[ "$check_gejala" != "null" ]]; then
 			catch_symtomp+="|$deli_each"
 		done < "${file_path[7]}"
 		fin_symtomp=$(echo "$catch_symtomp" | cut -c 2-)
-		echo "$fin_symtomp"
+		#echo "$fin_symtomp"
 
 		## lemmetization matching + cf setter
-		itr_regex=0	
-		arr_match=("")
 		idx_regex=$(jq ".$main_gejala[$itr] | length" "${file_path[5]}")
-		while [[ "$itr_regex" -lt  "$idx_regex" ]]; do
-			#statements
-			#grep each symmtpp ganti jadi fin symptop
-			search_gejala=$(jq ".$main_gejala[$itr].gejala_$itr_regex" "${file_path[5]}" | grep -E "$fin_symtomp")
-			if [[ "$search_gejala" ]]; then
-				# mulai itung cf
-				echo "$itr_regex"
-				cf_rule=$(cat "${file_path[5]}" | grep -E -w "$fin_symtomp" | wc -l)
-			fi
-			itr_regex=$((++itr_regex))
-		done
+		idx_arr=0
+		arr_regex=""
+		touch "${file_path[7]}.tmp"
+		cat /dev/null > "${file_path[7]}.tmp"
+		while IFS= read -r each_symtomp; do
+			itr_regex=0
+			while [[ "$itr_regex" -lt  "$idx_regex" ]]; do
+				#statements
+				#grep each symmtpp ganti jadi fin symptop
+				search_gejala=$(jq ".$main_gejala[$itr].gejala_$itr_regex" "${file_path[5]}" | grep -E "$each_symtomp")
+				if [[ "$search_gejala" ]]; then
+					# mulai itung cf
+					#echo "$itr_regex - $each_symtomp - $search_gejala"
+					cf_rule=$(cat "${file_path[5]}" | grep -E "$each_symtomp" | wc -l)
+					cf_tag=$(cat "${file_path[5]}" | tr -s '-' '_' | grep -E "$each_symtomp" | tr -d '\t')
+					check_tag=$(cat "${file_path[7]}.tmp" | grep "$cf_tag")
+					if [[ ! "$check_tag" ]]; then
+						# aman
+						echo "$cf_tag" >> "${file_path[7]}.tmp"
+						calc_cf=$(echo "(1/$cf_rule)*100" | bc -l | cut -c 1-5)
+						arr_regex[$idx_arr]="$calc_cf"
+						idx_arr=$((++idx_arr))
+					fi
+				fi
+				itr_regex=$((++itr_regex))
+			done
+		done < "${file_path[7]}"
+		number=$((number-2))
+		cf_regexmatch=$(echo "(${#arr_regex[@]}/$idx_regex)" | bc -l | cut -c 1-5)
+		cf_regexless=$(echo "(${#arr_regex[@]}/$number)/10" | bc -l | cut -c 1-5)
+		cf_rate=$(echo "($cf_regexmatch - (0.1-$cf_regexless))*100" | bc -l | cut -c 1-5)
 
+		## hitung cf combine
+		#echo -e "${arr_regex[@]}"
+		#cat "${file_path[7]}.tmp"
+		#echo -e "$number $cf_regexmatch , $cf_regexless , $cf_rate\n"
+		arr_regex_len=${#arr_regex[@]}
+		check_idx=0
+		catch_arr=${arr_regex[0]}
+		while [ "$check_idx" -lt "$arr_regex_len" ]; do
+			if [[ $((check_idx+1)) < $arr_regex_len ]]; then
+				echo "$catch_arr + ${arr_regex[$((check_idx+1))]}"
+				cf_combine=$(echo "$catch_arr + (${arr_regex[$((check_idx+1))]} * (100 - $catch_arr))" | bc -l | cut -c 1-5)
+				catch_arr=$cf_combine
+			fi
+			check_idx=$((++check_idx))			
+		done
+		cf_fix=$(echo "($catch_arr + $cf_rate)/2" | bc -l | cut -c 1-5)
+		echo -e "---\n$cf_fix"
 		itr=$((++itr))
 	done
 else
@@ -96,3 +131,6 @@ else
 fi
 
 # desimal : echo "(4/6)*100" | bc -l | cut -c 1-5
+# ubah - jadi _ di regex / langsung di file
+# masukin itungan parameter
+# masukin ke file, sort yang cf fix paling tinggi dia keluar
