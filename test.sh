@@ -9,4 +9,8 @@ while [ $ctr -lt $arr_regex_len ]; do
 	fi
 	ctr=$((++ctr))
 done
-
+a="35"
+b="37.7"
+if (( $(echo "$a < $b" | bc -l) &&  $(echo "$a > 0" | bc -l))); then
+	echo "kurang"
+fi

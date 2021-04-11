@@ -4,9 +4,9 @@
 		{
 			"gejala_0": ["dada cekung","nafas bungkuk","nafas bongkok","dada sakit"],
 			"gejala_1": ["mengi","suara siul pas nafas","merintih","suara merintih","ada siul","suara mengi","nafas mengi","nafas merintih"],
-			"gejala_2": ["nafas buru-buru","nafas cepat","nafas buru-buru","bengek"],
+			"gejala_2": ["nafas buru_buru","nafas cepat","nafas buru_buru","bengek"],
 			"gejala_3": ["demam","badan panas","badan demam","meriang","badan terasa anyep"],
-			"gejala_4": ["kepala suka ngangguk","kepala terangguk-angguk","kepala pegel"],
+			"gejala_4": ["kepala suka ngangguk","kepala terangguk_angguk","kepala pegel"],
 			"gejala_5": ["tangan pucat","tangan terlihat pucat","tangan dingin","telapak tangan dingin"]
 		}
 	]

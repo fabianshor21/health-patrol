@@ -6,18 +6,18 @@
 	----------------------------
 
 	Akurat Persentase Gejala dari Regex di satu penyakit
-	- 2 dari 6 gejala : 2/6  : 1/3 : 0.33
-	- 2 dari 10 input : 2/10 : 1/5 : 0.20 / 10 : 0.02
-	- 0.33 - (0.1-0.02)
-	- 0.33 - 0.08
-	- 0.25
+	- 3 dari 6 gejala : 3/6 : 1/2 : 0.50
+	- 3 dari 4 input  : 3/4 : 3/4 : 0.75 / 10 : 0.075
+	- 0.50 - (0.1-0.075)
+	- 0.50 - 0.025
+	- 0.475
 	-----------------------------
 	
 
 	CF RULE : CF user nilainya 1 secara default
-	- 2 muncul 7 smua penyakit : 1/7 : 0.14 * 1 : 0.14
-	- 3 muncul 5 smua penyakit : 1/5 : 0.20 * 1 : 0.20
-	- 5 muncul 3 smua penyakit : 1/3 : 0.33 * 1 : 0.33
+	- 2 muncul 7 smua penyakit : 1/7 : 0.14 * 1 : 0.14 | 1.00
+	- 3 muncul 5 smua penyakit : 1/5 : 0.20 * 1 : 0.20 | 1.00
+	- 5 muncul 3 smua penyakit : 1/3 : 0.33 * 1 : 0.33 | 1.00
 	- 6 muncul 2 smua penyakit : 1/5 : 0.50 * 1 : 0.50
 	------------------------------------
 	
@@ -50,6 +50,6 @@
 	- 1.67 / 2
 	- 0.84
 
-	- 100 + 63.32 / 2
-	- 163.32 / 2
-	- 81.66
+	- 1 + 0.47 / 2
+	- 1.475 / 2
+	- 0.735
