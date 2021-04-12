@@ -75,25 +75,31 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 			## lemmetization matching + cf setter
 			idx_regex=$(jq ".$main_gejala[$itr] | length" "${file_path[5]}")
 			idx_arr=0
-			arr_regex=""
 			touch "${file_path[7]}.tmp"
-			cat /dev/null > "${file_path[7]}.tmp"
+			rm "${file_path[7]}.tmp"
+			touch "${file_path[7]}.tmp"	
+					
+			arr_regex=""			
 			while IFS= read -r each_symtomp; do
 				itr_regex=0
 				while [[ "$itr_regex" -lt  "$idx_regex" ]]; do
 					#statements
 					#grep each symmtpp ganti jadi fin symptop
-					search_gejala=$(jq ".$main_gejala[$itr].gejala_$itr_regex" "${file_path[5]}" | grep -E "$each_symtomp")
+					ext_itr="$itr"
+					ext_itr+="_$itr_regex"
+					search_gejala=$(jq ".$main_gejala[$itr].gejala_$ext_itr" "${file_path[5]}" | grep -E "$each_symtomp")
 					if [[ "$search_gejala" ]]; then
 						# mulai itung cf
 						#echo "$itr_regex - $each_symtomp - $search_gejala"
 						cf_rule=$(cat "${file_path[5]}" | grep -E "$each_symtomp" | wc -l)
-						cf_tag=$(cat "${file_path[5]}" | tr -s '-' '_' | grep -E "$each_symtomp" | tr -d '\t')
-						check_tag=$(cat "${file_path[7]}.tmp" | grep "$cf_tag")
+						cf_tag=$(cat "${file_path[5]}" | grep -E "gejala_$itr" | grep -E "$each_symtomp" | tr -d '\t' | cut -d '"' -f 2)
+						check_tag=$(cat "${file_path[7]}.tmp" | grep -E "$cf_tag")
+						echo "$cf_tag ###__### $check_tag"
 						if [[ ! "$check_tag" ]]; then
 							# aman
 							echo "$cf_tag" >> "${file_path[7]}.tmp"
 							calc_cf=$(echo "(1/$cf_rule)*100" | bc -l | cut -c 1-5)
+							#echo "1 / $calc_cf * 100"
 							arr_regex[$idx_arr]="$calc_cf"
 							idx_arr=$((++idx_arr))
 						fi
@@ -115,8 +121,8 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 			catch_arr=${arr_regex[0]}
 			while [ "$check_idx" -lt "$arr_regex_len" ]; do
 				if [[ $((check_idx+1)) < $arr_regex_len ]]; then
-					echo "$catch_arr + ${arr_regex[$((check_idx+1))]}"
-					cf_combine=$(echo "$catch_arr + (${arr_regex[$((check_idx+1))]} * (100 - $catch_arr))" | bc -l | cut -c 1-5)
+					cf_combine=$(echo "$catch_arr + ((${arr_regex[$((check_idx+1))]} * (100 - $catch_arr)) / 100)" | bc -l | cut -c 1-5)
+					echo "$catch_arr + ((${arr_regex[$((check_idx+1))]} * (100 - $catch_arr)) / 100) >> $cf_combine"
 					catch_arr=$cf_combine
 				fi
 				check_idx=$((++check_idx))			
@@ -134,7 +140,7 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 			fi			
 
 			cf_fix=$(echo "($catch_arr + $cf_rate)/2" | bc -l | cut -c 1-5)
-			echo -e "---\n$cf_fix"
+			echo -e "---\n$cf_fix\n\n"
 			itr=$((++itr))
 		done
 	else

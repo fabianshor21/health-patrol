@@ -21,7 +21,7 @@
 	  "penyebab": ["adanya infeksi yang disebabkan oleh virus maupun bakteri","kondisi bangunan rumah yang kurang memadai","kondisi kelembaman yang tinggi dalam lingkungan rumah","banyaknya konsumsi pasif bahan bakar yang tidak aman"],
 	  "pertolongan_pertama": ["berikan oksigen maksimal 2-3 liter setiap menit-nya","berikan dosis pertama antibiotik yang sesuai anjuran dokter","rawat anak di rumah sakit","berikan paracetamol untuk menunjang demam"],
 	  "param_suhu": 0,
-	  "param_nafas": [50,40],
+	  "param_nafas": [0,0],
 	  "param_saturasi": 90,
 	  "param_batas_penanganan": 5
 	},	
@@ -33,10 +33,10 @@
 	  "penyebab": ["adanya infeksi yang disebabkan oleh virus maupun bakteri","kondisi bangunan rumah yang kurang memadai","kondisi kelembaman yang tinggi dalam lingkungan rumah","banyaknya konsumsi pasif bahan bakar yang tidak aman"],
 	  "pertolongan_pertama": ["berikan oksigen maksimal 2-3 liter setiap menit-nya","berikan dosis pertama antibiotik yang sesuai anjuran dokter","rawat anak di rumah sakit","berikan paracetamol untuk menunjang demam"],
 	  "param_suhu": 0,
-	  "param_nafas": [50,40],
-	  "param_saturasi": 90,
-	  "param_batas_penanganan": 5
-	}	
+	  "param_nafas": [60,40],
+	  "param_saturasi": 0,
+	  "param_batas_penanganan": 3
+	}
   ]
 }
 

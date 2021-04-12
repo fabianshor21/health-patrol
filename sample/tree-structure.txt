@@ -54,14 +54,19 @@ Parameter Diagnosa
 - Saturasi Oksigen
 -------------
 
-Klasifkasi disease_generic
-- Batuk / Sulit Bernafas | Masalah Berat Badan
-- Diare 				 | Sulit Tidur
-- Demam				     | Masalah Kulit
-- Masalah Telinga        | Menangis
-- Masalah Makan  		 | Masalah Muntah
-- Pucat				   
-- Kejang                
+Klasifkasi disease_generic + disease_regex
+- batuk_sulit_bernafas	- diare_muntah
+- demam_pilek			- masalah_kulit_telinga
+- menangis_berlebihan	- sakit_tenggorokan
+
+>> masing-masing klasifikasi minimal 2 contoh penyakit
+>> tiap gejala minimal punya 25 kata kunci
+>> parameter yang ga ada pengaruhnya, nilainya 0. contoh
+	- kecepatan nafas tidak ada hubungannya dengan masalah kulit, maka >> param_nafas: 0
+	- suhu tidak ada hubunganya dengan pilek, maka >> param_suhu: 0
+	- saturasi oksigen berhubungan sama menangis berlebihan, maka param_saturasi: [40,50]
+		- 40 untuk umur dibawah satu tahun
+		- 50 untuk umur diatas satu tahun
 
 Flow
 1. User Isi Parameter Diagnosa (lihat atas)
