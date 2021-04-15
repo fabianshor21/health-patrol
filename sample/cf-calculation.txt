@@ -6,8 +6,8 @@
 ----------------------------
 
 Akurat Persentase Gejala dari Regex di satu penyakit
-- 3 dari 6 gejala : 3/6 : 1/2 : 0.50
-- 3 dari 4 input  : 3/4 : 3/4 : 0.75 / 10 : 0.075
+- 4 dari 4 gejala : 3/6 : 1/2 : 1.0
+- 4 dari 7 input  : 3/4 : 3/4 : 0.75 / 10 : 0.075
 - 0.50 - (0.1-0.075)
 - 0.50 - 0.025
 - 0.475
