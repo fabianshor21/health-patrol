@@ -45,17 +45,29 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 		echo -e "║::  pisah masing masing gejala dengan menyebutkan ${GREEN}koma${ENDCOLOR} dan mengakhirinya dengan menyebutkan ${GREEN}titik${ENDCOLOR}"		
 		echo -e "║::  $foot2"
 		sleep 7s
+		
 		echo -e "║::  ${YELLOW}[SISTEM]${ENDCOLOR} merekam suara ..."
 		arecord -d 15 -f cd -t wav -q "${file_path[9]}"
 		echo -e "║::  ${YELLOW}[SISTEM]${ENDCOLOR} mengkonversi suara ..."
 		echo -e "║::  $foot2"		
 		get_speech=$(python3 source/python/speech-to-text.py)
 		space_speech=" $get_speech"
-		echo "$space_speech" | tr -s ',' '\n' | tr -d '.' | tr -s '-' '_' | cut -c 2- > "${file_path[7]}"
+		#echo "$space_speech" | tr -s ',' '\n' | tr -d '.' | tr -s '-' '_' | cut -c 2- > "${file_path[7]}"
+		deli="koma"
+		concat=$space_speech$deli
+		arr_deli=()
+		while [[ $concat ]]; do
+			arr_deli+=("${concat%%"$deli"*}@")
+			concat=${concat#*"$deli"}
+		done
+		echo ${arr_deli[@]} | tr -s '@' '\n' | tr -d ' ' > "${file_path[7]}"
 
 		ans=""
 		comp=""
 		number=1
+		grep "\S" "${file_path[7]}" | tr -s '-' '_' > "${file_path[7]}.space"
+		cat "${file_path[7]}.space" > "${file_path[7]}"
+
 		while IFS= read -r each_symtomp_spch; do
 			printf "║::  ${YELLOW}%.2d - ${ENDCOLOR}$each_symtomp_spch\n" "$number"
 			number=$((++number))
@@ -148,22 +160,25 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 				fi
 				check_idx=$((++check_idx))			
 			done
-			echo "---"
-			echo "(${#arr_regex[@]}/$idx_regex)/10 -- (${#arr_regex[@]}/$fin_number)/10"			
-			echo "$cf_regexmatch - (0.1-$cf_regexless) * 100"
-			if (( $( echo "$get_temp < $param_suhu" | bc -l) && $( echo "$param_suhu > 0" | bc -l) )); then
-				catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+			if [[ ${#arr_regex[@]} -gt 0 ]]; then			
+				echo "---"
+				echo "(${#arr_regex[@]}/$idx_regex)/10 -- (${#arr_regex[@]}/$fin_number)/10"			
+				echo "$cf_regexmatch - (0.1-$cf_regexless) * 100"
+				if (( $( echo "$get_temp < $param_suhu" | bc -l) && $( echo "$param_suhu > 0" | bc -l) )); then
+					catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+				fi
+				if (( $( echo "$get_freqbreath < $param_nafas" | bc -l) && $( echo "$param_nafas > 0" | bc -l) )); then			
+					catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+				fi
+				if (( $( echo "$get_saturation > $param_saturasi" | bc -l) && $( echo "$param_saturasi > 0" | bc -l) )); then						
+					catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+				fi			
+				echo "$catch_arr + $cf_rate / 2"
+				cf_fix=$(echo "($catch_arr + $cf_rate)/2" | bc -l | cut -c 1-5)
+				# if 
+				echo -e "---\n$cf_fix % untuk penyakit index $itr"
+				echo -e "$cf_fix\t$itr\t$check_urgent" >> "${file_path[8]}"
 			fi
-			if (( $( echo "$get_freqbreath < $param_nafas" | bc -l) && $( echo "$param_nafas > 0" | bc -l) )); then			
-				catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
-			fi
-			if (( $( echo "$get_saturation > $param_saturasi" | bc -l) && $( echo "$param_saturasi > 0" | bc -l) )); then						
-				catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
-			fi			
-			echo "$catch_arr + $cf_rate / 2"
-			cf_fix=$(echo "($catch_arr + $cf_rate)/2" | bc -l | cut -c 1-5)
-			echo -e "---\n$cf_fix % untuk penyakit index $itr\n\n"
-			echo -e "$cf_fix\t$itr\t$check_urgent" >> "${file_path[8]}"
 			itr=$((++itr))
 		done
 		sorted_res=$(cat "${file_path[8]}" | sort -r)

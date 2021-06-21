@@ -1,0 +1,57 @@
+CF / Certainty Factor / Faktor Kepastian : nilai kepastian yang digunakan untuk mendiagnosis sesuatu yang belum pasti. Nilai CF memiliki range dari 0 - 1. Rumus CF diturunkan jadi beberapa tahap hitungan, berikut mekanisme perhitungannya : >>>
+
+*> Penyakit Pneumonia, memiliki 6 gejala*
+*> User menyebutkan 10 gejala, 4 diantaranya cocok dengan Pneumonia, sisanya tidak*
+
+*1. Menghitung Kecocokan Gejala Penyakit dengan Input User*
+> mencari kecocokan antara gejala yang user berikan, dengan gejala sebenarnya
+
+- Symtomp Match (SM) : 4 / 6 total gejala pneumonia : 4/6  : 0.67 ##
+- Symtomp Input (SI) : 4 / 10 total input user      : 4/10 : 0.40 ##
+- Match Rate (MR)    : SM - (0.10 - (SI / 10))
+		    : 0.67 - (0.10 - (0.40 / 10))
+		    : 0.67 - (0.10 - 0.04)
+		    : 0.67 - 0.06
+		    : 0.61 ##
+
+*2. Menentukan Nilai Patokan setiap Gejala Penyakitnya*
+> yang dihitung hanya 4 gejala saja, karena hanya 4 itu yang cocok, 2 sisanya tidak perlu
+> nilai patokan berpengaruh dari banyaknya gejala yang sama untuk penyakit yang berbeda
+> contoh : gejala batuk, ada di penyakit pneumonia, TBC, Bronkitis, dan lain-lain
+> semakin banyak penyakitnya, nilai patokannya semakin rendah
+
+- Gejala A : muncul di 7 penyakit lain : 1/7 : 0.14 ##
+- Gejala B : muncul di 2 penyakit lain : 1/2 : 0.50 ##
+- Gejala C : muncul di 3 penyakit lain : 1/3 : 0.33 ##
+- Gejala D : muncul di 4 penyakit lain : 1/4 : 0.25 ##
+
+*3. Mencari Nilai CF dari Setiap Gejala Penyakit & Input User*
+> CF akan dihitung berulang ulang hingga sampai ke gejala terakir, yaitu Gejala D
+> proses disebut juga CF combine, karena nilai CF yang didapet, dipake lagi buat cari CF selanjutnya
+
+- CF1	: Gejala A + (Gejala B * (1 - Gejala A))
+	: 0.14 + (0.50 * (1 - 0.14))
+	: 0.14 + (0.50 * 0.86)
+	: 0.14 + 0.43
+	: 0.57 ##
+	
+- CF2	: CF1 + (Gejala C * (1 - CF1))
+	: 0.57 + (0.33 * (1 - 0.57))
+	: 0.57 + (0.33 * 0.43)
+	: 0.57 + 0.14
+	: 0.71 ##
+
+- CF3	: CF2 + (Gejala D * (1 - CF2))
+	: 0.71 + (0.25 * (1 - 0.71))
+	: 0.71 + (0.25 * 0.29)
+	: 0.71 + 0.07
+	: 0.78 ##
+
+*4. Mencari Rata-rata antara MR dan CF*
+- CFtot	: MR + CF / 2
+	: 0.61 + 0.78 / 2
+	: 1.39 / 2
+	: 0.69 ##
+	
+*5. Kesimpulan*
+> dapat dikatakan bahwa User 0.69 atau 69 % terkena Pneumonia
