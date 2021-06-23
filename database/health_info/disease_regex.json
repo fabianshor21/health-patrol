@@ -3,20 +3,20 @@
 	[
 		{
 			"gejala_0_0": ["dadacekung","nafasbungkuk","nafasbongkok","dadasakit"],
-			"gejala_0_1": ["mengi","suara siulpasnafas","merintih","suara merintih","adasiul","suaramengi","nafasmengi","nafasmerintih"],
+			"gejala_0_1": ["mengi","suarasiulpasnafas","merintih","suaramerintih","adasiul","suaramengi","nafasmengi","nafasmerintih"],
 			"gejala_0_2": ["nafasburu_buru","nafascepat","napasburu_buru","bengek"],
 			"gejala_0_3": ["demam","badanpanas","badandemam","meriang","badanterasaanyep"],
-			"gejala_0_4": ["kepalasukangangguk","kepalaterangguk_angguk","kepala pegel","kepalapegal"],
+			"gejala_0_4": ["kepalasukangangguk","kepalaterangguk_angguk","kepala pegel","kepalapegal","kepalapegal_pegal"],
 			"gejala_0_5": ["tanganpucat","tanganterlihatpucat","tangandingin","telapaktangandingin"]
 		},
 		{
 			"gejala_1_0": ["dadacekung","nafasbungkuk","nafasbongkok","dadasakit"],
-			"gejala_1_4": ["kepalasukangangguk","kepalaterangguk_angguk","kepala pegel","kepalapegal"],
-			"gejala_1_5": ["tanganpucat","tanganterlihatpucat","tangandingin","telapaktangandingin"]
+			"gejala_1_1": ["kepalasukangangguk","kepalaterangguk_angguk","kepala pegel","kepalapegal","kepalapegal_pegal"],
+			"gejala_1_2": ["tanganpucat","tanganterlihatpucat","tangandingin","telapaktangandingin"]
 		},
 		{
 			"gejala_2_0": ["dadacekung","nafasbungkuk","nafasbongkok","dadasakit"],
-			"gejala_2_1": ["mengi","suara siulpasnafas","merintih","suara merintih","adasiul","suaramengi","nafasmengi","nafasmerintih"]
+			"gejala_2_1": ["mengi","suarasiulpasnafas","merintih","suaramerintih","adasiul","suaramengi","nafasmengi","nafasmerintih"]
 		}
 	]
 }

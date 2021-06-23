@@ -13,6 +13,9 @@ foot2=$(bash source/bash/banner.sh 3)
 left_b="${YELLOW}[${ENDCOLOR}"; right_b="${YELLOW}]${ENDCOLOR}"
 user=$(cat ${file_path[0]} | cut -d ' ' -f 1 | tail -n 1); user=$(echo "${user^^}")
 kid=$(cat ${file_path[0]} | cut -d ' ' -f 2 | tail -n 1); kid=$(echo "${kid^^}")
+foot2=$(bash source/bash/banner.sh 3)
+foot3=$(bash source/bash/banner.sh 4)
+foot4=$(bash source/bash/banner.sh 5)
 
 while :; do
 	clear
@@ -38,13 +41,20 @@ while :; do
 				bash source/bash/banner.sh 2
 				bash source/bash/run-diagnose.sh
 				;;
-			"DA"|"da")
-				bash source/bash/banner.sh 2
-				bash source/bash/login.sh signup
+			"PP"|"pp")
+				echo -e "     $foot2"		
+				echo -e "     ${YELLOW}1.${ENDCOLOR} untuk mulai melakukan fitur diagnosa, masukan kode ${GREEN}DP${ENDCOLOR}"
+				echo -e "     ${YELLOW}2.${ENDCOLOR} akan ada beberapa ${GREEN}parameter${ENDCOLOR} yang harus diisi, disesuaikan dengan kondisi anak"				
+				echo -e "     ${YELLOW}3.${ENDCOLOR} gejala utama adalah ${GREEN}generalisasi${ENDCOLOR} dari apa yang gejala-gejala yang anak rasakan sekarang"								
+				echo -e "     ${YELLOW}4.${ENDCOLOR} lama gejala dapat dihitung dari ${GREEN}berapa hari${ENDCOLOR} anak mengalami gejala tersebut"												
+				echo -e "     ${YELLOW}5.${ENDCOLOR} anda dapat menyebutkan gejala-gejala tersebut lewat ${GREEN}microphone${ENDCOLOR} dengan batas waktu 15 detik"
+				echo -e "     ${YELLOW}6.${ENDCOLOR} sebelumnya akan diberikan ${GREEN}panduan${ENDCOLOR} dalam penyebutan gejala, yang dapat dibaca dalam 15 detik\n"																				
 				;;
-			"TA"|"ta")
-				bash source/bash/banner.sh 2
-				bash source/bash/login.sh addkid
+			"SR"|"sr")
+				echo -e "     $foot2"		
+				echo -e "     ${YELLOW}1.${ENDCOLOR} Pneumonia pada Anak Balita di Indonesia ${GREEN}//${ENDCOLOR} Anwar, Athena, Ika Dharmayanti 2014"
+				echo -e "     ${YELLOW}2.${ENDCOLOR} Buku Bagan: Manajemen Terpadu Balita Sakit (MTBS) ${GREEN}//${ENDCOLOR} Kementrian Kesehatan RI 2015"				
+				echo -e "     ${YELLOW}3.${ENDCOLOR} Buku Saku: Pelayanan Kesehatan Anak di Rumah Sakit ${GREEN}//${ENDCOLOR} WHO, Bakti Husada, Ikatan Dokter Anak Indonesia\n"								
 				;;					
 		esac
 	done

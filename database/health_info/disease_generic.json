@@ -2,40 +2,43 @@
   "batuk_sulit_bernafas": 
   [
     {
-	  "nama_penyakit": "Infeksi Paru-paru Berat",
+	  "nama_penyakit": "Infeksi Paru-paru",
 	  "nama_ilmiah": "Pneumonia",
-	  "sinopsis": "pneumonia merupakan peradangan paru-paru yang disebabkan oleh infeksi bakteri. umum dijumpai pada usia balita hingga remaja",
+	  "sinopsis": "Peradangan paru-paru pada balita ataupun remaja yang disebabkan oleh infeksi bakteri",
 	  "gejala": ["bernapas dengan dinding dada menarik kedalam","saturasi oksigen kurang dari 90 %","adanya suara mengi saat menghembuskan nafas","frekuensi nafas yang relatif cepat setiap menit-nya","anak mengalami demam","kepala terangguk-angguk menandakan pernapasan berat","telapak tangan terlihat sangat pucat"],
 	  "penyebab": ["adanya infeksi yang disebabkan oleh virus maupun bakteri","kondisi bangunan rumah yang kurang memadai","kondisi kelembaman yang tinggi dalam lingkungan rumah","banyaknya konsumsi pasif bahan bakar yang tidak aman"],
 	  "pertolongan_pertama": ["berikan oksigen maksimal 2-3 liter setiap menit-nya","berikan dosis pertama antibiotik yang sesuai anjuran dokter","rawat anak di rumah sakit","berikan paracetamol untuk menunjang demam"],
 	  "param_suhu": 37.7,
 	  "param_nafas": [50,40],
 	  "param_saturasi": 90,
-	  "param_batas_penanganan": 14
+	  "param_batas_penanganan": 14,
+	  "level_penyakit": 9
 	},
     {
-	  "nama_penyakit": "A",
-	  "nama_ilmiah": "A",
-	  "sinopsis": "pneumonia merupakan peradangan paru-paru yang disebabkan oleh infeksi bakteri. umum dijumpai pada usia balita hingga remaja",
+	  "nama_penyakit": "Kegemukan",
+	  "nama_ilmiah": "Diabetus Kuplakus",
+	  "sinopsis": "Peradangan paru-paru pada balita ataupun remaja yang disebabkan oleh infeksi bakteri",
 	  "gejala": ["bernapas dengan dinding dada menarik kedalam","saturasi oksigen kurang dari 90 %","adanya suara mengi saat menghembuskan nafas","frekuensi nafas yang relatif cepat setiap menit-nya","anak mengalami demam","kepala terangguk-angguk menandakan pernapasan berat","telapak tangan terlihat sangat pucat"],
 	  "penyebab": ["adanya infeksi yang disebabkan oleh virus maupun bakteri","kondisi bangunan rumah yang kurang memadai","kondisi kelembaman yang tinggi dalam lingkungan rumah","banyaknya konsumsi pasif bahan bakar yang tidak aman"],
 	  "pertolongan_pertama": ["berikan oksigen maksimal 2-3 liter setiap menit-nya","berikan dosis pertama antibiotik yang sesuai anjuran dokter","rawat anak di rumah sakit","berikan paracetamol untuk menunjang demam"],
 	  "param_suhu": 0,
 	  "param_nafas": [0,0],
 	  "param_saturasi": 90,
-	  "param_batas_penanganan": 5
+	  "param_batas_penanganan": 5,
+	  "level_penyakit": 6
 	},	
     {
-	  "nama_penyakit": "B",
-	  "nama_ilmiah": "B",
-	  "sinopsis": "pneumonia merupakan peradangan paru-paru yang disebabkan oleh infeksi bakteri. umum dijumpai pada usia balita hingga remaja",
+	  "nama_penyakit": "Batuk Pilek",
+	  "nama_ilmiah": "Common Cold",
+	  "sinopsis": "Peradangan paru-paru pada balita ataupun remaja yang disebabkan oleh infeksi bakteri",
 	  "gejala": ["bernapas dengan dinding dada menarik kedalam","saturasi oksigen kurang dari 90 %","adanya suara mengi saat menghembuskan nafas","frekuensi nafas yang relatif cepat setiap menit-nya","anak mengalami demam","kepala terangguk-angguk menandakan pernapasan berat","telapak tangan terlihat sangat pucat"],
 	  "penyebab": ["adanya infeksi yang disebabkan oleh virus maupun bakteri","kondisi bangunan rumah yang kurang memadai","kondisi kelembaman yang tinggi dalam lingkungan rumah","banyaknya konsumsi pasif bahan bakar yang tidak aman"],
 	  "pertolongan_pertama": ["berikan oksigen maksimal 2-3 liter setiap menit-nya","berikan dosis pertama antibiotik yang sesuai anjuran dokter","rawat anak di rumah sakit","berikan paracetamol untuk menunjang demam"],
 	  "param_suhu": 0,
 	  "param_nafas": [60,40],
 	  "param_saturasi": 0,
-	  "param_batas_penanganan": 3
+	  "param_batas_penanganan": 3,
+	  "level_penyakit": 3	  
 	}
   ]
 }

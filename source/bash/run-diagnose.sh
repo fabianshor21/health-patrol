@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
 dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json" "${dir_path[4]}/disease_class.json" "${dir_path[4]}/fetch_symtomps" "${dir_path[4]}/fetch_results" "${dir_path[4]}/speech-record.wav")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json" "${dir_path[4]}/disease_class.json" "${dir_path[4]}/fetch_symtomps" "${dir_path[4]}/fetch_results" "${dir_path[4]}/speech-record.wav" "${dir_path[4]}/unmatched_symtomps")
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -44,149 +44,224 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 		echo -e "║::  sebutkan gejala yang anak anda alami ${GREEN}satu-per-satu${ENDCOLOR} secara singkat dan jelas dalam ${GREEN}Bahasa${ENDCOLOR} yang benar"
 		echo -e "║::  pisah masing masing gejala dengan menyebutkan ${GREEN}koma${ENDCOLOR} dan mengakhirinya dengan menyebutkan ${GREEN}titik${ENDCOLOR}"		
 		echo -e "║::  $foot2"
-		sleep 7s
-		
+		sleep 15s
+
+		echo -e "║::  ${YELLOW}[SISTEM]${ENDCOLOR} bersiap ..."; sleep 3s		
 		echo -e "║::  ${YELLOW}[SISTEM]${ENDCOLOR} merekam suara ..."
-		arecord -d 15 -f cd -t wav -q "${file_path[9]}"
+		arecord -d 15 -f cd -t wav -q "${file_path[9]}";
 		echo -e "║::  ${YELLOW}[SISTEM]${ENDCOLOR} mengkonversi suara ..."
 		echo -e "║::  $foot2"		
-		get_speech=$(python3 source/python/speech-to-text.py)
-		space_speech=" $get_speech"
-		#echo "$space_speech" | tr -s ',' '\n' | tr -d '.' | tr -s '-' '_' | cut -c 2- > "${file_path[7]}"
-		deli="koma"
-		concat=$space_speech$deli
-		arr_deli=()
-		while [[ $concat ]]; do
-			arr_deli+=("${concat%%"$deli"*}@")
-			concat=${concat#*"$deli"}
-		done
-		echo ${arr_deli[@]} | tr -s '@' '\n' | tr -d ' ' > "${file_path[7]}"
-
-		ans=""
-		comp=""
-		number=1
-		grep "\S" "${file_path[7]}" | tr -s '-' '_' > "${file_path[7]}.space"
-		cat "${file_path[7]}.space" > "${file_path[7]}"
-
-		while IFS= read -r each_symtomp_spch; do
-			printf "║::  ${YELLOW}%.2d - ${ENDCOLOR}$each_symtomp_spch\n" "$number"
-			number=$((++number))
-		done < "${file_path[7]}"
-		#echo -e "$comp" | head -n -2 | tr -s '-' '_' > "${file_path[7]}"
-		touch "${file_path[8]}"; rm "${file_path[8]}"; touch "${file_path[8]}"
-		echo -e "║::  $foot2"		
-
-		while [[ "$itr" -lt "$idx" ]]; do
-			fix_number=$number
-			param_suhu=$(jq ".$main_gejala[$itr].param_suhu" "${file_path[4]}")
-			param_saturasi=$(jq ".$main_gejala[$itr].param_saturasi" "${file_path[4]}")
-			if [[ "$get_age" -lt 1 ]]; then
-				param_nafas=$(jq ".$main_gejala[$itr].param_nafas[0]" "${file_path[4]}")
-			else
-				param_nafas=$(jq ".$main_gejala[$itr].param_nafas[1]" "${file_path[4]}")
-			fi
-			param_batas_penanganan=$(jq ".$main_gejala[$itr].param_batas_penanganan" "${file_path[4]}")
-			if [[ "$get_sicktime" -ge "$param_batas_penanganan" ]]; then
-				check_urgent=1
-			else
-				check_urgent=0
-			fi
-
-			## kalkulasi param
-
-			## kalulasi regex
-			catch_symtomp=""
-			while IFS= read -r each_symtomp; do
-				##jadiin multiple pattern
-				deli_each=$(echo "$each_symtomp" | cut -d '"' -f 2)
-				catch_symtomp+="|$deli_each"
-			done < "${file_path[7]}"
-			fin_symtomp=$(echo "$catch_symtomp" | cut -c 2-)
-			#echo "$fin_symtomp"
-
-			## lemmetization matching + cf setter
-			idx_regex=$(jq ".$main_gejala[$itr] | length" "${file_path[5]}")
-			idx_arr=0
-			touch "${file_path[7]}.tmp"
-			rm "${file_path[7]}.tmp"
-			touch "${file_path[7]}.tmp"
-					
-			arr_regex=()			
-			while IFS= read -r each_symtomp; do
-				itr_regex=0
-				while [[ "$itr_regex" -lt  "$idx_regex" ]]; do
-					#statements
-					#grep each symmtpp ganti jadi fin symptop
-					ext_itr="$itr"
-					ext_itr+="_$itr_regex"
-					search_gejala=$(jq ".$main_gejala[$itr].gejala_$ext_itr" "${file_path[5]}" | grep -E "$each_symtomp")
-					if [[ "$search_gejala" ]]; then
-						# mulai itung cf
-						#echo "$itr_regex - $each_symtomp - $search_gejala"
-						cf_rule=$(cat "${file_path[5]}" | grep -E "$each_symtomp" | wc -l)
-						cf_tag=$(cat "${file_path[5]}" | grep -E "gejala_$itr" | grep -E "$each_symtomp" | tr -d '\t' | cut -d '"' -f 2)
-						check_tag=$(cat "${file_path[7]}.tmp" | grep -E "$cf_tag")
-						echo "$cf_tag ###__### $check_tag"
-						if [[ ! "$check_tag" ]]; then
-							# aman
-							echo "$cf_tag" >> "${file_path[7]}.tmp"
-							calc_cf=$(echo "(1/$cf_rule)*100" | bc -l | cut -c 1-5)
-							#echo "1 / $calc_cf * 100"
-							arr_regex[$idx_arr]="$calc_cf"
-							idx_arr=$((++idx_arr))
-						fi
-					fi
-					itr_regex=$((++itr_regex))
-				done
-			done < "${file_path[7]}"
-			fin_number=$((fix_number-1))
-			cf_regexmatch=$(echo "(${#arr_regex[@]}/$idx_regex)" | bc -l | cut -c 1-5)
-			cf_regexless=$(echo "(${#arr_regex[@]}/$fin_number)/10" | bc -l | cut -c 1-5)
-			cf_rate=$(echo "($cf_regexmatch - (0.1-$cf_regexless))*100" | bc -l | cut -c 1-5)
-
-			## hitung cf combine
-			#echo -e "${arr_regex[@]}"
-			#cat "${file_path[7]}.tmp"
-			#echo -e "$number $cf_regexmatch , $cf_regexless , $cf_rate\n"
-			arr_regex_len=${#arr_regex[@]}
-			check_idx=0
-			catch_arr=${arr_regex[0]}
-			echo "${arr_regex[@]}"
-			while [ "$check_idx" -lt "$arr_regex_len" ]; do
-				if [[ $((check_idx+1)) < $arr_regex_len ]]; then
-					cf_combine=$(echo "$catch_arr + ((${arr_regex[$((check_idx+1))]} * (100 - $catch_arr)) / 100)" | bc -l | cut -c 1-5)
-					echo "$catch_arr + ((${arr_regex[$((check_idx+1))]} * (100 - $catch_arr)) / 100) >> $cf_combine"
-					catch_arr=$cf_combine
-				fi
-				check_idx=$((++check_idx))			
+		sleep 3s
+		get_speech=$(python3 source/python/speech-to-text.py); sleep 3s
+		if [[ "$get_speech" != "catch_recognizer" ]]; then
+			space_speech=" $get_speech"
+			#echo "$space_speech" | tr -s ',' '\n' | tr -d '.' | tr -s '-' '_' | cut -c 2- > "${file_path[7]}"
+			
+			deli="koma"
+			concat=$space_speech$deli
+			arr_deli=()
+			while [[ $concat ]]; do
+				arr_deli+=("${concat%%"$deli"*}@")
+				concat=${concat#*"$deli"}
 			done
-			if [[ ${#arr_regex[@]} -gt 0 ]]; then			
-				echo "---"
-				echo "(${#arr_regex[@]}/$idx_regex)/10 -- (${#arr_regex[@]}/$fin_number)/10"			
-				echo "$cf_regexmatch - (0.1-$cf_regexless) * 100"
-				if (( $( echo "$get_temp < $param_suhu" | bc -l) && $( echo "$param_suhu > 0" | bc -l) )); then
-					catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+			echo ${arr_deli[@]} | tr -s '@' '\n' | tr -d ' ' > "${file_path[7]}"
+
+			ans=""
+			comp=""
+			number=1
+			grep "\S" "${file_path[7]}" | tr -s '-' '_' > "${file_path[7]}.space"
+			cat "${file_path[7]}.space" > "${file_path[7]}"
+
+			while IFS= read -r each_symtomp_spch; do
+				printf "║::  ${YELLOW}%.2d - ${ENDCOLOR}$each_symtomp_spch\n" "$number"
+				number=$((++number))
+			done < "${file_path[7]}"
+			#echo -e "$comp" | head -n -2 | tr -s '-' '_' > "${file_path[7]}"
+			touch "${file_path[8]}"; rm "${file_path[8]}"; touch "${file_path[8]}"
+			echo -e "║::  $foot2"		
+
+			while [[ "$itr" -lt "$idx" ]]; do
+				fix_number=$number
+				param_suhu=$(jq ".$main_gejala[$itr].param_suhu" "${file_path[4]}")
+				param_saturasi=$(jq ".$main_gejala[$itr].param_saturasi" "${file_path[4]}")
+				level=$(jq ".$main_gejala[$itr].level_penyakit" "${file_path[4]}")
+				if [[ "$get_age" -lt 1 ]]; then
+					param_nafas=$(jq ".$main_gejala[$itr].param_nafas[0]" "${file_path[4]}")
+				else
+					param_nafas=$(jq ".$main_gejala[$itr].param_nafas[1]" "${file_path[4]}")
 				fi
-				if (( $( echo "$get_freqbreath < $param_nafas" | bc -l) && $( echo "$param_nafas > 0" | bc -l) )); then			
-					catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+				param_batas_penanganan=$(jq ".$main_gejala[$itr].param_batas_penanganan" "${file_path[4]}")
+				if [[ "$get_sicktime" -ge "$param_batas_penanganan" ]]; then
+					check_urgent="U"
+				else
+					check_urgent="N"
 				fi
-				if (( $( echo "$get_saturation > $param_saturasi" | bc -l) && $( echo "$param_saturasi > 0" | bc -l) )); then						
-					catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
-				fi			
-				echo "$catch_arr + $cf_rate / 2"
-				cf_fix=$(echo "($catch_arr + $cf_rate)/2" | bc -l | cut -c 1-5)
-				# if 
-				echo -e "---\n$cf_fix % untuk penyakit index $itr"
-				echo -e "$cf_fix\t$itr\t$check_urgent" >> "${file_path[8]}"
+
+				## kalkulasi param
+
+				## kalulasi regex
+				catch_symtomp=""
+				while IFS= read -r each_symtomp; do
+					##jadiin multiple pattern
+					deli_each=$(echo "$each_symtomp" | cut -d '"' -f 2)
+					catch_symtomp+="|$deli_each"
+				done < "${file_path[7]}"
+				fin_symtomp=$(echo "$catch_symtomp" | cut -c 2-)
+				#echo "$fin_symtomp"
+
+				## lemmetization matching + cf setter
+				idx_regex=$(jq ".$main_gejala[$itr] | length" "${file_path[5]}")
+				idx_arr=0
+				touch "${file_path[7]}.tmp"
+				rm "${file_path[7]}.tmp"
+				touch "${file_path[7]}.tmp"
+						
+				arr_regex=()			
+				while IFS= read -r each_symtomp; do
+					itr_regex=0
+					while [[ "$itr_regex" -lt  "$idx_regex" ]]; do
+						#statements
+						#grep each symmtpp ganti jadi fin symptop
+						ext_itr="$itr"
+						ext_itr+="_$itr_regex"
+						search_gejala=$(jq ".$main_gejala[$itr].gejala_$ext_itr" "${file_path[5]}" | grep -E "$each_symtomp")
+						if [[ "$search_gejala" ]]; then
+							# mulai itung cf
+							#echo "$itr_regex - $each_symtomp - $search_gejala"
+							cf_rule=$(cat "${file_path[5]}" | grep -E "$each_symtomp" | wc -l)
+							cf_tag=$(cat "${file_path[5]}" | grep -E "gejala_$itr" | grep -E "$each_symtomp" | tr -d '\t' | cut -d '"' -f 2)
+							check_tag=$(cat "${file_path[7]}.tmp" | grep -E "$cf_tag")
+		#					echo "$cf_tag ###__### $check_tag"
+							if [[ ! "$check_tag" ]]; then
+								# aman
+								echo "$cf_tag" >> "${file_path[7]}.tmp"
+								calc_cf=$(echo "(1/$cf_rule)*100" | bc -l | cut -c 1-5)
+								#echo "1 / $calc_cf * 100"
+								arr_regex[$idx_arr]="$calc_cf"
+								idx_arr=$((++idx_arr))
+							fi
+						fi
+						itr_regex=$((++itr_regex))
+					done
+				done < "${file_path[7]}"
+				fin_number=$((fix_number-1))
+				cf_regexmatch=$(echo "(${#arr_regex[@]}/$idx_regex)" | bc -l | cut -c 1-5)
+				cf_regexless=$(echo "(${#arr_regex[@]}/$fin_number)/10" | bc -l | cut -c 1-5)
+				cf_rate=$(echo "($cf_regexmatch - (0.1-$cf_regexless))*100" | bc -l | cut -c 1-5)
+
+				## hitung cf combine
+				#echo -e "${arr_regex[@]}"
+				#cat "${file_path[7]}.tmp"
+				#echo -e "$number $cf_regexmatch , $cf_regexless , $cf_rate\n"
+
+				arr_regex_len=${#arr_regex[@]}
+				check_idx=0
+				catch_arr=${arr_regex[0]}
+		#		echo "${arr_regex[@]}"
+				while [ "$check_idx" -lt "$arr_regex_len" ]; do
+					if [[ $((check_idx+1)) < $arr_regex_len ]]; then
+						cf_combine=$(echo "$catch_arr + ((${arr_regex[$((check_idx+1))]} * (100 - $catch_arr)) / 100)" | bc -l | cut -c 1-5)
+		#				echo "$catch_arr + ((${arr_regex[$((check_idx+1))]} * (100 - $catch_arr)) / 100) >> $cf_combine"
+						catch_arr=$cf_combine
+					fi
+					check_idx=$((++check_idx))			
+				done
+
+				if [[ ${#arr_regex[@]} -gt 0 ]]; then			
+		#			echo "---"
+		#			echo "(${#arr_regex[@]}/$idx_regex)/10 -- (${#arr_regex[@]}/$fin_number)/10"			
+		#			echo "$cf_regexmatch - (0.1-$cf_regexless) * 100"
+					if (( $( echo "$get_temp < $param_suhu" | bc -l) && $( echo "$param_suhu > 0" | bc -l) )); then
+						catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+					fi
+					if (( $( echo "$get_freqbreath < $param_nafas" | bc -l) && $( echo "$param_nafas > 0" | bc -l) )); then			
+						catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+					fi
+					if (( $( echo "$get_saturation > $param_saturasi" | bc -l) && $( echo "$param_saturasi > 0" | bc -l) )); then						
+						catch_arr=$(echo "$catch_arr - 5" | bc -l | cut -c 1-5)
+					fi			
+		#			echo "$catch_arr + $cf_rate / 2"
+					cf_fix=$(echo "($catch_arr + $cf_rate)/2" | bc -l | cut -c 1-5)
+					# if 
+		#			echo -e "---\n$cf_fix % untuk penyakit index $itr\n"
+					echo -e "$cf_fix\t$check_urgent\t$level\t$itr" >> "${file_path[8]}"
+				fi
+				itr=$((++itr))
+
+			done
+			check_result_file=$(grep "\S" "${file_path[8]}")
+			if [[ "$check_result_file" ]]; then
+				sorted_res=$(cat "${file_path[8]}" | sort -r)
+				echo "$sorted_res" > "${file_path[8]}"
+				idx_dis=$(cat "${file_path[8]}" | head -n 1 | tr -s '\t' '@' | cut -d '@' -f 4)
+				acc_dis=$(cat "${file_path[8]}" | head -n 1 | tr -s '\t' '@' | cut -d '@' -f 1)
+				urg_dis=$(cat "${file_path[8]}" | head -n 1 | tr -s '\t' '@' | cut -d '@' -f 2)
+				status=""
+				if [[ "$urg_dis" == "U" ]]; then
+					status="Anak berada dalam Fase Kritis. Rujukkan anak ke rumah sakit terdekat"
+				else
+					status="Anak berada dalam Fase Awal Gejala. Rujukkan anak ke puskesmas terdekat"
+				fi
+				penyakit=$(jq ".$main_gejala[$idx_dis].nama_penyakit" "${file_path[4]}" | cut -d '"' -f 2)
+				ilmiah=$(jq ".$main_gejala[$idx_dis].nama_ilmiah" "${file_path[4]}" | cut -d '"' -f 2)
+				full_penyakit="$penyakit ($ilmiah)"
+				sinopsis=$(jq ".$main_gejala[$idx_dis].sinopsis" "${file_path[4]}" | cut -d '"' -f 2)
+				jq ".$main_gejala[$idx_dis].gejala[]" "${file_path[4]}" | tr -d '"' > "${file_path[4]}.symp"
+				jq ".$main_gejala[$idx_dis].penyebab[]" "${file_path[4]}" | tr -d '"' > "${file_path[4]}.caus"
+				jq ".$main_gejala[$idx_dis].pertolongan_pertama[]" "${file_path[4]}" | tr -d '"' > "${file_path[4]}.help"		
+
+				echo -e "\n$foot3"
+				printf "| No | %-31s Detail Prediksi Diagnosis %-34s | Akurat |"
+				echo -e "\n$foot3"
+				printf "|${DARK_G}====${ENDCOLOR}|$foot4|${DARK_G}========${ENDCOLOR}|\n"
+				printf "| ${YELLOW}1.${ENDCOLOR} | ${YELLOW}%-93s${ENDCOLOR}| ${YELLOW}%-6s${ENDCOLOR} |\n" "$full_penyakit" "$acc_dis"
+				printf "| -- | -------------------------------------------------------------------------------------------- | ------ |\n" " "
+				printf "|    | %-93s| %-6s |\n" "Sinopsis:" " "
+				printf "|    | %-93s| %-6s |\n" "$sinopsis" " "
+				printf "|    | -------------------------------------------------------------------------------------------- | %-6s |\n" " "		
+				printf "|    | %-93s| %-6s |\n" "Gejala:" " "
+				while IFS= read -r each_row; do
+					printf "|    | +) %-90s| %-6s |\n" "$each_row" " "
+				done < "${file_path[4]}.symp"
+				printf "|    | -------------------------------------------------------------------------------------------- | %-6s |\n" " "		
+				printf "|    | %-93s| %-6s |\n" "Penyebab:" " "		
+				while IFS= read -r each_row; do
+					printf "|    | +) %-90s| %-6s |\n" "$each_row" " "
+				done < "${file_path[4]}.caus"		
+				printf "|    | -------------------------------------------------------------------------------------------- | %-6s |\n" " "				
+				printf "|    | %-93s| %-6s |\n" "Pertolongan Pertama:" " "		
+				while IFS= read -r each_row; do
+					printf "|    | +) %-90s| %-6s |\n" "$each_row" " "
+				done < "${file_path[4]}.help"		
+				printf "|    | -------------------------------------------------------------------------------------------- | %-6s |\n" " "
+				printf "|    | %-93s| %-6s |\n" "Status Diagnosa:" " "
+				printf "|    | %-93s| %-6s |\n" "$status" " "
+				printf "| -- | -------------------------------------------------------------------------------------------- | ------ |\n" " "
+				get_more_diag=$(cat "${file_path[8]}" | sed -n 2,3p)
+				if [[ "$get_more_diag" ]]; then
+					cat "${file_path[8]}" | sed -n 2,3p > "${file_path[8]}.more"
+					ctr_more=2
+					while IFS= read -r each_row; do
+						idx_dis=$(echo "$each_row" | tr -s '\t' '@' | cut -d '@' -f 4)
+						acc_dis=$(echo "$each_row" | tr -s '\t' '@' | cut -d '@' -f 1)
+						penyakit=$(jq ".$main_gejala[$idx_dis].nama_penyakit" "${file_path[4]}" | cut -d '"' -f 2)
+						ilmiah=$(jq ".$main_gejala[$idx_dis].nama_ilmiah" "${file_path[4]}" | cut -d '"' -f 2)
+						full_penyakit="$penyakit ($ilmiah)"
+						printf "| ${YELLOW}%-1s.${ENDCOLOR} | ${YELLOW}%-93s${ENDCOLOR}| ${YELLOW}%-6s${ENDCOLOR} |\n" "$ctr_more" "$full_penyakit" "$acc_dis"
+						printf "| -- | -------------------------------------------------------------------------------------------- | ------ |\n" " "
+						ctr_more=$((++ctr_more))																		
+					done < "${file_path[8]}.more"
+				fi
+				printf "|${DARK_G}====${ENDCOLOR}|$foot4|${DARK_G}========${ENDCOLOR}|\n\n"
+			else
+				cat "${file_path[7]}" >> "${file_path[10]}"
+				echo -e "     maaf, gejala yang anda berikan ${YELLOW}tidak cocok${ENDCOLOR} dengan dataset penyakit yang kini tersedia ..."
+				echo -e "     gejala anda telah berhasil ${GREEN}tersimpan${ENDCOLOR} untuk nantinya diaudit oleh admin\n"
 			fi
-			itr=$((++itr))
-		done
-		sorted_res=$(cat "${file_path[8]}" | sort -r)
-		echo "$sorted_res" > "${file_path[8]}"
-		echo -e "\n$foot3"
-		printf "| No | %-31s Detail Prediksi Diagnosis %-31s | Akurat(%%) |"
-		echo -e "\n$foot3"
-		printf "|${DARK_G}====${ENDCOLOR}|$foot4|${DARK_G}===========${ENDCOLOR}|\n"
+		else
+			echo -e "     fitur SpeechRecognition dalam program ini membutuhkan koneksi ${GREEN}internet${ENDCOLOR} yang stabil untuk translasi"
+			echo -e "     fitur diagnosa dengan input manual akan hadir dalam bentuk offline\n"
+		fi
 	else
 		echo ""
 	fi
