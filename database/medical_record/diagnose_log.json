@@ -1,0 +1,28 @@
+{
+  "D_2021_07_27": [
+    {
+      "timestamp": "21:17:20",
+      "nama_pengguna": "azzahh",
+      "nama_panggian_anak": "nurfa",
+      "tinggi_badan": 50,
+      "berat_badan": 3.42,
+      "suhu_badan_kepala": 36.5,
+      "frekuensi_ambil_nafas": 48,
+      "saturasi_oksigen": 98,
+      "gejala_utama": "batuk_sulit_bernafas",
+      "lama_mengalami_gejala": 4,
+      "gejala": [
+        "sulitbernafas",
+        "tidaknafsumakan",
+        "tanganpucat",
+        "badanlemas"
+      ],
+      "hasil_diagnosa": [
+        {
+          "nama_penyakit": "Asthma",
+          "nilai_cf_rate": 87.5
+        }
+      ]
+    }
+  ]
+}

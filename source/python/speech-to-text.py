@@ -8,3 +8,4 @@ try:
         print(text)
 except:
     print('catch_recognizer')
+

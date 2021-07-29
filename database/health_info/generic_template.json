@@ -1,0 +1,18 @@
+{
+	"katagori_penyakit":
+	[
+		{
+			"nama_penyakit": "string",
+			"nama_ilmiah": "string",
+			"sinopsis": "string",
+			"gejala": ["string_0","string_1"],
+			"penyebab": ["string_0","string_1"],
+			"pertolongan_pertama": ["string_0","string_1"],
+			"param_suhu": 0,
+			"param_nafas": [0,1],
+			"param_saturasi": 0,
+			"param_batas_penanganan": 0,
+			"level_penyakit": 0
+		}
+	]
+}

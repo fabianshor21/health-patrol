@@ -1,0 +1,10 @@
+{
+	"katagori_penyakit":
+	[
+		"gejala_n_0": ["string_0","string_1"],
+		"gejala_n_1": ["string_0","string_1"],
+		"gejala_n_2": ["string_0","string_1"],
+		"gejala_n_3": ["string_0","string_1"],
+		"gejala_n_4": ["string_0","string_1"]
+	]
+}

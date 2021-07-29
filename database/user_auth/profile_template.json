@@ -1,0 +1,28 @@
+{
+	"username_orangtua":
+	[
+		{
+			"nama_orangtua": "string",
+			"nama_pengguna": "string_username",
+			"kata_sandi": "string_hash",
+			"no_kartu_keluarga": "string",
+			"no_telepon": "string",
+			"alamat_email": "string"
+		},
+		{
+			"username_anak": {
+				"nama_panjang_anak": "string",
+				"nama_panggilan_anak": "string_username",
+				"jumlah_anak": 0,
+				"urutan_anak": 0,
+				"tanggal_lahir": "string yyyy-mm-dd",
+				"jenis_kelahiran": "string",
+				"jenis_kelamin": "string",
+				"tinggi_badan_lahir": "string",
+				"berat_badan_lahir": "string",
+				"kelainan_bawaan": "string",
+				"riwayat_infeksi_HIV": "string"
+			}
+		}
+	]
+}

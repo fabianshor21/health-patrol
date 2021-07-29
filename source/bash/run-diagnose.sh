@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------
-dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info")
-file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json" "${dir_path[4]}/disease_class.json" "${dir_path[4]}/fetch_symtomps" "${dir_path[4]}/fetch_results" "${dir_path[4]}/speech-record.wav" "${dir_path[4]}/unmatched_symtomps")
+dir_path=("database" "source" "database/user_auth" "database/medical_record" "database/health_info" "web-page")
+file_path=("${dir_path[2]}/session" "${dir_path[2]}/profile.json" "${dir_path[2]}/profile-growth.json" "${dir_path[2]}/history.log" "${dir_path[4]}/disease_generic.json" "${dir_path[4]}/disease_regex.json" "${dir_path[4]}/disease_class.json" "${dir_path[4]}/fetch_symtomps" "${dir_path[4]}/fetch_results" "${dir_path[4]}/speech-record.wav" "${dir_path[4]}/unmatched_symtomps" "${dir_path[3]}/diagnose_log.json")
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -12,6 +12,13 @@ ENDCOLOR="\e[0m"
 foot2=$(bash source/bash/banner.sh 3)
 foot3=$(bash source/bash/banner.sh 4)
 foot4=$(bash source/bash/banner.sh 5)
+
+#get_curdate=$(date '+%Y_%m_%d')
+#get_curtime=$(date '+%H:%M:%S')
+#get_log_length=$(jq ".D_$get_curdate | length" "${file_path[11]}")
+#jq ".D_$get_curdate[$get_log_length] += {\"timestamp\":\"$get_curtime\"}" "${file_path[11]}" > "${file_path[11]}.tmp" && 
+#cat "${file_path[11]}.tmp" > "${file_path[11]}" &&
+#rm "${file_path[11]}.tmp"
 
 read -p "║::  tinggi_badan ............ : " get_height
 read -p "║::  berat_badan ............. : " get_weight
@@ -120,23 +127,16 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 				while IFS= read -r each_symtomp; do
 					itr_regex=0
 					while [[ "$itr_regex" -lt  "$idx_regex" ]]; do
-						#statements
-						#grep each symmtpp ganti jadi fin symptop
 						ext_itr="$itr"
 						ext_itr+="_$itr_regex"
 						search_gejala=$(jq ".$main_gejala[$itr].gejala_$ext_itr" "${file_path[5]}" | grep -E "$each_symtomp")
 						if [[ "$search_gejala" ]]; then
-							# mulai itung cf
-							#echo "$itr_regex - $each_symtomp - $search_gejala"
 							cf_rule=$(cat "${file_path[5]}" | grep -E "$each_symtomp" | wc -l)
 							cf_tag=$(cat "${file_path[5]}" | grep -E "gejala_$itr" | grep -E "$each_symtomp" | tr -d '\t' | cut -d '"' -f 2)
 							check_tag=$(cat "${file_path[7]}.tmp" | grep -E "$cf_tag")
-		#					echo "$cf_tag ###__### $check_tag"
 							if [[ ! "$check_tag" ]]; then
-								# aman
 								echo "$cf_tag" >> "${file_path[7]}.tmp"
 								calc_cf=$(echo "(1/$cf_rule)*100" | bc -l | cut -c 1-5)
-								#echo "1 / $calc_cf * 100"
 								arr_regex[$idx_arr]="$calc_cf"
 								idx_arr=$((++idx_arr))
 							fi
@@ -144,6 +144,7 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 						itr_regex=$((++itr_regex))
 					done
 				done < "${file_path[7]}"
+				
 				fin_number=$((fix_number-1))
 				cf_regexmatch=$(echo "(${#arr_regex[@]}/$idx_regex)" | bc -l | cut -c 1-5)
 				cf_regexless=$(echo "(${#arr_regex[@]}/$fin_number)/10" | bc -l | cut -c 1-5)
@@ -190,7 +191,7 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 
 			done
 			check_result_file=$(grep "\S" "${file_path[8]}")
-			if [[ "$check_result_file" ]]; then
+			if [[ "$check_result_file" ]]; then				
 				sorted_res=$(cat "${file_path[8]}" | sort -r)
 				echo "$sorted_res" > "${file_path[8]}"
 				idx_dis=$(cat "${file_path[8]}" | head -n 1 | tr -s '\t' '@' | cut -d '@' -f 4)
@@ -206,6 +207,10 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 				ilmiah=$(jq ".$main_gejala[$idx_dis].nama_ilmiah" "${file_path[4]}" | cut -d '"' -f 2)
 				full_penyakit="$penyakit ($ilmiah)"
 				sinopsis=$(jq ".$main_gejala[$idx_dis].sinopsis" "${file_path[4]}" | cut -d '"' -f 2)
+
+				send_ilmiiah=$ilmiah
+				send_acc=$acc_dis
+
 				jq ".$main_gejala[$idx_dis].gejala[]" "${file_path[4]}" | tr -d '"' > "${file_path[4]}.symp"
 				jq ".$main_gejala[$idx_dis].penyebab[]" "${file_path[4]}" | tr -d '"' > "${file_path[4]}.caus"
 				jq ".$main_gejala[$idx_dis].pertolongan_pertama[]" "${file_path[4]}" | tr -d '"' > "${file_path[4]}.help"		
@@ -253,6 +258,48 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 					done < "${file_path[8]}.more"
 				fi
 				printf "|${DARK_G}====${ENDCOLOR}|$foot4|${DARK_G}========${ENDCOLOR}|\n\n"
+
+				get_curdate=$(date '+%Y_%m_%d')
+				get_curtime=$(date '+%H:%M:%S')
+				get_username=$(cat "${file_path[0]}" | cut -d ' ' -f 1)
+				get_kid=$(cat "${file_path[0]}" | cut -d ' ' -f 2)				
+				get_log_length=$(jq ".D_$get_curdate | length" "${file_path[11]}")
+				catch_gejala=""
+
+				while IFS= read -r each_row; do
+					catch_gejala+="\"$each_row\","
+				done < "${file_path[7]}"
+				catch_gejala=${catch_gejala%?}
+
+				jq ".D_$get_curdate[$get_log_length] += {\"timestamp\":\"$get_curtime\",\"nama_pengguna\":\"$get_username\",\"nama_panggian_anak\":\"$get_kid\",\"tinggi_badan\":$get_height,\"berat_badan\":$get_weight,\"suhu_badan_kepala\":$get_temp,\"frekuensi_ambil_nafas\":$get_freqbreath,\"saturasi_oksigen\":$get_saturation,\"gejala_utama\":\"$main_gejala\",\"lama_mengalami_gejala\":$get_sicktime,\"gejala\":[$catch_gejala],\"hasil_diagnosa\":[{\"nama_penyakit\":\"$send_ilmiiah\",\"nilai_cf_rate\":$send_acc}]}" "${file_path[11]}" > "${file_path[11]}.tmp" && 
+				cat "${file_path[11]}.tmp" > "${file_path[11]}" &&
+				rm "${file_path[11]}.tmp"
+
+				code="<!DOCTYPE html>"
+				code+="<html>"
+				code+="<head>"
+				code+="<meta charset=\"utf-8\">"
+				code+="<title>Health-Patrol | Dashboard</title>"
+				code+="<link rel=\"icon\" href=\"favicon.ico\">"
+				code+="</head>"
+				code+="<body style=\"text-align: center; font-family: monospace; font-size: 1.5em;\">"
+				code+="<h1 style=\"font-size: 30px; margin-bottom: 0.01em;\">HEALTH-PATROL</h1>"
+				code+="<label>a maintaned dataset repository for Rest-API</label>"
+				code+="<hr style=\"margin-bottom: 1em; width: 85%;\">"						
+				code+="<pre style=\"text-align: left;margin-left: 1.5em;\">"
+				code+=$(jq "." "${file_path[11]}")
+				code+="</pre>"
+				code+="<hr style=\"margin-bottom: 1em; width: 85%;\">"
+				code+="<label>"
+				code+="developed by IFA-TECH ♥<br>"
+				code+="<a href=\"/\">home</a> |"	
+				code+="<a href=\"#\">contact</a> |"		
+				code+="<a href=\"#\">term-of-use</a>"
+				code+="</label>"
+				code+="</body>"
+				code+="</html>"
+				echo "$code" > "${dir_path[5]}/medical-record/index.html"
+
 			else
 				cat "${file_path[7]}" >> "${file_path[10]}"
 				echo -e "     maaf, gejala yang anda berikan ${YELLOW}tidak cocok${ENDCOLOR} dengan dataset penyakit yang kini tersedia ..."

@@ -1,0 +1,25 @@
+{
+	"D_tahun_bulan_tanggal":
+	[
+		{
+			"timestamp": "string",
+			"nama_pengguna": "string_username",
+			"nama_panggilan_anak": "string_hash",
+			"tinggi_badan": 0,
+			"berat_badan": 0,
+			"suhu_badan_kepala": 0,
+			"frekuensi_ambil_nafas": 0,
+			"saturasi_oksigen": 0,
+			"gejala_utama": "string",
+			"lama_mengalami_gejala": 0,
+			"gejala": ["string_0","string_1"],
+			"hasil_diagnosa":
+			[
+				{
+					"nama_penyakit": "string",
+					"nilai_cf_rate": 0
+				}
+			]
+		}
+	]
+}
