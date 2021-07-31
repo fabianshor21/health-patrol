@@ -275,31 +275,6 @@ if [[ "$get_height" && "$get_weight" && "$get_temp" && "$get_freqbreath" && "$ge
 				cat "${file_path[11]}.tmp" > "${file_path[11]}" &&
 				rm "${file_path[11]}.tmp"
 
-				code="<!DOCTYPE html>"
-				code+="<html>"
-				code+="<head>"
-				code+="<meta charset=\"utf-8\">"
-				code+="<title>Health-Patrol | Dashboard</title>"
-				code+="<link rel=\"icon\" href=\"favicon.ico\">"
-				code+="</head>"
-				code+="<body style=\"text-align: center; font-family: monospace; font-size: 1.5em;\">"
-				code+="<h1 style=\"font-size: 30px; margin-bottom: 0.01em;\">HEALTH-PATROL</h1>"
-				code+="<label>a maintaned dataset repository for Rest-API</label>"
-				code+="<hr style=\"margin-bottom: 1em; width: 85%;\">"						
-				code+="<pre style=\"text-align: left;margin-left: 1.5em;\">"
-				code+=$(jq "." "${file_path[11]}")
-				code+="</pre>"
-				code+="<hr style=\"margin-bottom: 1em; width: 85%;\">"
-				code+="<label>"
-				code+="developed by IFA-TECH ♥<br>"
-				code+="<a href=\"/\">home</a> |"	
-				code+="<a href=\"#\">contact</a> |"		
-				code+="<a href=\"#\">term-of-use</a>"
-				code+="</label>"
-				code+="</body>"
-				code+="</html>"
-				echo "$code" > "${dir_path[5]}/medical-record/index.html"
-
 			else
 				cat "${file_path[7]}" >> "${file_path[10]}"
 				echo -e "     maaf, gejala yang anda berikan ${YELLOW}tidak cocok${ENDCOLOR} dengan dataset penyakit yang kini tersedia ..."

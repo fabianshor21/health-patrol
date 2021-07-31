@@ -85,31 +85,6 @@ case $1 in
 			fi
 		fi
 
-		code="<!DOCTYPE html>"
-		code+="<html>"
-		code+="<head>"
-		code+="<meta charset=\"utf-8\">"
-		code+="<title>Health-Patrol | Dashboard</title>"
-		code+="<link rel=\"icon\" href=\"favicon.ico\">"
-		code+="</head>"
-		code+="<body style=\"text-align: center; font-family: monospace; font-size: 1.5em;\">"
-		code+="<h1 style=\"font-size: 30px; margin-bottom: 0.01em;\">HEALTH-PATROL</h1>"
-		code+="<label>a maintaned dataset repository for Rest-API</label>"
-		code+="<hr style=\"margin-bottom: 1em; width: 85%;\">"						
-		code+="<pre style=\"text-align: left;margin-left: 1.5em;\">"
-		code+=$(jq "." "${file_path[1]}")
-		code+="</pre>"
-		code+="<hr style=\"margin-bottom: 1em; width: 85%;\">"
-		code+="<label>"
-		code+="developed by IFA-TECH ♥<br>"
-		code+="<a href=\"/\">home</a> |"	
-		code+="<a href=\"#\">contact</a> |"		
-		code+="<a href=\"#\">term-of-use</a>"
-		code+="</label>"
-		code+="</body>"
-		code+="</html>"
-		echo "$code" > "${dir_path[5]}/user-auth/index.html"
-
 		echo -e ""		
 		;;
 	"addkid")
@@ -149,31 +124,6 @@ case $1 in
 					rm "${file_path[1]}.tmp"
 					echo -e "║::  $foot2"
 					echo -e "     akun dengan nama_panggilan_anak ${GREEN}$get_kidname${ENDCOLOR} berhasil ditambahkan!"
-
-					code="<!DOCTYPE html>"
-					code+="<html>"
-					code+="<head>"
-					code+="<meta charset=\"utf-8\">"
-					code+="<title>Health-Patrol | Dashboard</title>"
-					code+="<link rel=\"icon\" href=\"favicon.ico\">"
-					code+="</head>"
-					code+="<body style=\"text-align: center; font-family: monospace; font-size: 1.5em;\">"
-					code+="<h1 style=\"font-size: 30px; margin-bottom: 0.01em;\">HEALTH-PATROL</h1>"
-					code+="<label>a maintaned dataset repository for Rest-API</label>"
-					code+="<hr style=\"margin-bottom: 1em; width: 85%;\">"						
-					code+="<pre style=\"text-align: left;margin-left: 1.5em;\">"
-					code+=$(jq "." "${file_path[1]}")
-					code+="</pre>"
-					code+="<hr style=\"margin-bottom: 1em; width: 85%;\">"
-					code+="<label>"
-					code+="developed by IFA-TECH ♥<br>"
-					code+="<a href=\"/\">home</a> |"	
-					code+="<a href=\"#\">contact</a> |"		
-					code+="<a href=\"#\">term-of-use</a>"
-					code+="</label>"
-					code+="</body>"
-					code+="</html>"
-					echo "$code" > "${dir_path[5]}/user-auth/index.html"
 
 				fi
 			else

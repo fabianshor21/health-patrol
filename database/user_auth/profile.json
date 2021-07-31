@@ -25,5 +25,32 @@
         "alergi_obat": "aspirin"
       }
     }
+  ],
+  "admin": [
+    {
+      "nama_orangtua": "admin",
+      "nama_wali_pengganti": "admin",
+      "nama_pengguna": "admin",
+      "kata_sandi": "456b7016a916a4b178dd72b947c152b7",
+      "no_kartu_keluarga": "1",
+      "no_telepon": "1",
+      "alamat_email": "@gmail.com"
+    },
+    {
+      "admin": {
+        "nama_panjang_anak": "admin",
+        "nama_panggilan_anak": "admin",
+        "jumlah_anak": 1,
+        "urutan_anak": 1,
+        "tanggal_lahir": "1999-11-19",
+        "jenis_kelahiran": "normal",
+        "jenis_kelamin": "laki-laki",
+        "tinggi_badan_lahir": "1",
+        "berat_badan_lahir": "1",
+        "kelainan_bawaan": "",
+        "riwayat_infeksi_HIV": "",
+        "alergi_obat": ""
+      }
+    }
   ]
 }
