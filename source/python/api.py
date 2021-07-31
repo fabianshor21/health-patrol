@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, json, render_template
+import logging
 app = Flask(__name__)
 
 @app.route('/')
